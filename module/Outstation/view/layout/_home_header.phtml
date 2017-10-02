@@ -1,0 +1,431 @@
+<?php //$url = $this->basePath();
+if (defined('RUNNING_FROM_ROOT')) {
+  
+	$url = $this->basePath().'/public';
+} ?>
+<?php echo $this->doctype(); ?>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle(''. $this->translate('Hello42'))->setSeparator(' - ')->setAutoEscape(false) ?><?php echo $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Welcome</title>
+       
+    <?php 
+    echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $url . '/img/favicon.ico'))
+                        ->prependStylesheet($url . 'css/style.css')
+            		->prependStylesheet($url . 'css/responsive.css')
+            		->prependStylesheet($url . 'css/main.css')
+                        ->prependStylesheet($url . 'css/animate.min.css')
+                        ->prependStylesheet($url . 'css/font-awesome.min.css')
+                        ->prependStylesheet($url . 'css/bootstrap.min.css');
+            
+    ?>
+        
+    <?php  echo  $this->headScript()
+                        
+            ->prependFile($url . 'js/custom.js')
+            ->prependFile($url . 'js/jquery-ui.js')
+            ->prependFile($url . 'js/jquery-1.11.2.min.js')
+            ->prependFile($url . 'js/wow.min.js')
+            ->prependFile($url . 'js/main.js')
+            ->prependFile($url . 'js/bootstrap.min.js')
+            ->prependFile($url . 'js/jquery-2.js')			
+            ->prependFile($url . 'js/analytics.js');
+    
+    ?>
+       
+</head>
+
+<body class="homepage">
+
+    <header id="header">
+        <div class="top-bar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="top-number">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" onClick="choose_cities()" style="color:#fff;">
+            <bdi id="">Delhi and NCR</bdi>
+            <span class="caret"></span></a>
+                        
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                       <div class="social">
+                            <ul class="social-share">
+                            
+                            <li><a id="modal_trigger" href="#modal"  style="padding:0 10px;"><i class="fa fa-home fa-fw fa-1x"></i>  Home</a></li>
+                            <li><a id="model_triger1" href="#modal" style="padding:0 10px;"><i class="fa fa-paper-plane fa-fw fa-1x"></i>  Services</a></li>
+                            
+                            
+                                <li><a href="#"><i class="fa fa-user fa-fw fa-1x"></i>  Fare Structure</a></li>
+                                <li><a href="#"><i class="fa fa-phone fa-fw fa-1x"></i>  Contact Us</a></li>
+                                <li><a href="#"><i class="fa fa-user fa-fw fa-1x"></i>  Driver Registration</a></li> 
+                           
+                            </ul>
+                            
+                       </div>
+                    </div>
+                </div>
+            </div><!--/.container-->
+        </div><!--/.top-bar-->
+
+      
+            <div class="container">
+                <div class="navbar-header col-sm-6 padding0 padding12top left_logo">
+                    
+                    <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="logo"></a>
+                </div>
+				
+                <div class="col-sm-6 padding0 right_icon">
+                
+                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 col-new-login" style="margin-top:5px; float:right;"> 
+<!--<a href="/login" class="bgnone  pull-right">-->
+<a data-toggle="modal" data-target="#myModallsogin" href="#" class="bgnone  pull-right center" >
+  <div  class="circle-tile-heading login_signbg red marginbtom0"><i class="fa fa-sign-in fa-fw fa-1_5x sicon" style="cursor:pointer;" ></i></div>
+  <label class="control-label textlogin">
+  <!--<span id="login_user"></span>-->
+  <span id="">Login</span>
+  </label>
+  </a> <a href="/login/index/signup" class="bgnone  pull-right center">
+  <div onclick="signuphome();" class="circle-tile-heading login_signbg red marginbtom0"><i class="fa fa-user fa-fw fa-1_5x sicon" style="cursor:pointer;" ></i></div>
+  <label class="control-label textlogin">
+  <!--<span id="user_signup"></span>-->
+
+<span id="">SignUp</span>
+</label>
+  </a> </div>
+                
+                </div>
+            </div><!--/.container-->
+        <!--/nav-->
+		
+    </header>
+    
+    <!--/header-->
+
+   <div>
+   	
+   </div>
+   <section id="screen1">
+   <nav class="navbar navbar-inverse topbar " role="banner" style="background:#3e3c3c;">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    
+                </div>
+				
+                <div class="collapse navbar-collapse navbar-left padding0">
+                    <ul class="nav navbar-nav ">
+                        <li class="active"><a href="index.html"><i class="fa fa-home fa-6"></i></a></li>
+                        <li><a href="#modal_flightandhotel" class="modal_flaghtandhotelsearch">About Us</a></li>
+                         <li><a href="local-booking.html">Local Hire</a></li>
+                        
+                        <li><a href="<?php echo $this->basePath();?>/index/point">Point to Point</a></li>
+                       
+                        
+                         <li>
+                            <a href="transfer.html" class="">Airport Transfer</a>
+                           
+                        </li>
+                         <li >
+                            <a href="#" class="" data-toggle="">Packages </a>
+                            
+                        </li>
+                                           
+                    </ul>
+                </div>
+            </div><!--/.container-->
+        </nav>
+        
+        </section>
+</div>
+
+<section id="main-slider" class="no-margin">
+        <div class="carousel slide">
+           
+            <div class="carousel-inner">
+
+                <div class="item active" style="background-image: url(images/slider/bg1.jpg)">
+                    <div class="container">
+    
+    		<div class="manrpage_box">
+            
+            <div class="col-sm-12" align="center">
+           			<h2> You’re in SAFE Hands </h2>
+                    <h1>Best Taxi Service</h1>
+            
+            </div>
+                           
+          <div class="col-sm-12 padding0 margin-searchbox">
+                                 <div class="search-tabs search-tabs-bg search-tabs-nobox search-tabs-lift-top">
+                <div class="tabbable">
+                    
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="tab-1">
+                           
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-lg form-group-icon-left"><!--<i class="fa fa-map-marker input-icon"></i>-->
+                                              <div class="col-sm-10 padding0 col-sm-10new">                                              
+                                            <input dir="auto" style="position: relative; vertical-align: top; background-color" spellcheck="false" autocomplete="off" class="typeahead form-control tt-input" placeholder="Search City" type="text">
+                                            
+                                            </div> 
+                                            
+                                            <div class="col-sm-2"><button class="btn btn-primary btn-lg" type="submit"><i class="fa fa-search"></i> Search</button></div>
+                                            <div class="col-sm-12 padding0" style="margin-top:10px;">                                              
+                                            	<div class="form_meubg" id="pointtopoint_icon">
+                                                <a href="/index/point">
+                                                	<div class="menuicon"><i  class="fa fa-map-marker"></i></div>
+                                                     <label style="float:left; display:none;" id="text_pointtopoint">Point to Point</label>
+                                                    </a>
+                                                </div>
+                                                
+                                                
+                                                <div class="form_meubg" id="local_icon">
+                                                 <a href="local-booking.html">
+                                                	<div class="menuicon"><i  class="fa fa-car"></i></div>
+                                                     <label style="float:left; display:none;" id="text_local">Local Booking</label>
+                                                    </a>
+                                                </div>
+                                                
+                                                 <div class="form_meubg" id="transfer_icon">
+                                                 <a href="transfer.html">
+                                                	<div class="menuicon"><i  class="fa fa-plane"></i></div>
+                                                     <label style="float:left; display:none;" id="text_transfer">Transfer</label>
+                                                    </a>
+                                                </div>
+                                                
+                                                 <div class="form_meubg" id="outstation_icon">
+                                                 <a href="outstation.html" data-toggle="tab">
+                                                	<div class="menuicon"><i  class="fa fa-car"></i></div>
+                                                   <label id="text_outstation" style="display:none; float:left;">Outsation</label>
+                                                    </a>
+                                                </div>
+                                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                               </form> 
+                        </div>
+                        
+                      
+                        
+                    </div>
+                </div>
+            </div>
+            
+                            </div>
+ 						
+                        </div>
+                    </div>
+                </div><!--/.item-->
+
+                <div class="item" style="background-image: url(images/slider/bg2.jpg)">
+                    <div class="container">
+    
+    		<div style="margin:auto; width:50%;">
+            
+            <div class="col-sm-12" align="center">
+           			<h2> You’re in SAFE Hands </h2>
+                    <h1>Best Taxi Service</h1>
+            
+            </div>
+                           
+          <div class="col-sm-12 padding0 margin-searchbox">
+                                 <div class="search-tabs search-tabs-bg search-tabs-nobox search-tabs-lift-top">
+                <div class="tabbable">
+                    
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="tab-1">
+                           
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-lg form-group-icon-left"><!--<i class="fa fa-map-marker input-icon"></i>-->
+                                              <div class="col-sm-10 padding0 col-sm-10new">                                              
+                                            <input dir="auto" style="position: relative; vertical-align: top; background-color" spellcheck="false" autocomplete="off" class="typeahead form-control tt-input" placeholder="Search City" type="text">
+                                            
+                                            </div> 
+                                            
+                                            <div class="col-sm-2"><button class="btn btn-primary btn-lg" type="submit"><i class="fa fa-search"></i> Search</button></div>
+                                            <div class="col-sm-12 padding0" style="margin-top:10px;">                                              
+                                            	<div class="form_meubg" id="pointtopoint_icon">
+                                                <a href="pointtopoint-booking.html">
+                                                	<div class="menuicon"><i  class="fa fa-map-marker"></i></div>
+                                                     <label style="float:left; display:none;" id="text_pointtopoint">Point to Point</label>
+                                                    </a>
+                                                </div>
+                                                
+                                                
+                                                <div class="form_meubg" id="local_icon">
+                                                 <a href="local-booking.html">
+                                                	<div class="menuicon"><i  class="fa fa-car"></i></div>
+                                                     <label style="float:left; display:none;" id="text_local">Local Booking</label>
+                                                    </a>
+                                                </div>
+                                                
+                                                 <div class="form_meubg" id="transfer_icon">
+                                                 <a href="transfer.html">
+                                                	<div class="menuicon"><i  class="fa fa-plane"></i></div>
+                                                     <label style="float:left; display:none;" id="text_transfer">Transfer</label>
+                                                    </a>
+                                                </div>
+                                                
+                                                 <div class="form_meubg" id="outstation_icon">
+                                                 <a href="outstation.html" data-toggle="tab">
+                                                	<div class="menuicon"><i  class="fa fa-car"></i></div>
+                                                   <label id="text_outstation" style="display:none; float:left;">Outsation</label>
+                                                    </a>
+                                                </div>
+                                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                               </form> 
+                        </div>
+                        
+                      
+                        
+                    </div>
+                </div>
+            </div>
+            
+                            </div>
+ 						
+                        </div>
+                    </div>
+                </div><!--/.item-->
+
+                <div class="item" style="background-image: url(images/slider/bg3.jpg)">
+                    <div class="container">
+    
+    		<div style="margin:auto; width:50%;">
+            
+            <div class="col-sm-12" align="center">
+           			<h2> You’re in SAFE Hands </h2>
+                    <h1>Best Taxi Service</h1>
+            
+            </div>
+                           
+          <div class="col-sm-12 padding0 margin-searchbox">
+                                 <div class="search-tabs search-tabs-bg search-tabs-nobox search-tabs-lift-top">
+                <div class="tabbable">
+                    
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="tab-1">
+                           
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-lg form-group-icon-left"><!--<i class="fa fa-map-marker input-icon"></i>-->
+                                              <div class="col-sm-10 padding0 col-sm-10new">                                              
+                                            <input dir="auto" style="position: relative; vertical-align: top; background-color" spellcheck="false" autocomplete="off" class="typeahead form-control tt-input" placeholder="Search City" type="text">
+                                            
+                                            </div> 
+                                            
+                                            <div class="col-sm-2"><button class="btn btn-primary btn-lg" type="submit"><i class="fa fa-search"></i> Search</button></div>
+                                            <div class="col-sm-12 padding0" style="margin-top:10px;">                                              
+                                            	<div class="form_meubg" id="pointtopoint_icon">
+                                                <a href="pointtopoint-booking.html">
+                                                	<div class="menuicon"><i  class="fa fa-map-marker"></i></div>
+                                                     <label style="float:left; display:none;" id="text_pointtopoint">Point to Point</label>
+                                                    </a>
+                                                </div>
+                                                
+                                                
+                                                <div class="form_meubg" id="local_icon">
+                                                 <a href="local-booking.html">
+                                                	<div class="menuicon"><i  class="fa fa-car"></i></div>
+                                                     <label style="float:left; display:none;" id="text_local">Local Booking</label>
+                                                    </a>
+                                                </div>
+                                                
+                                                 <div class="form_meubg" id="transfer_icon">
+                                                 <a href="transfer.html">
+                                                	<div class="menuicon"><i  class="fa fa-plane"></i></div>
+                                                     <label style="float:left; display:none;" id="text_transfer">Transfer</label>
+                                                    </a>
+                                                </div>
+                                                
+                                                 <div class="form_meubg" id="outstation_icon">
+                                                 <a href="outstation.html" data-toggle="tab">
+                                                	<div class="menuicon"><i  class="fa fa-car"></i></div>
+                                                   <label id="text_outstation" style="display:none; float:left;">Outsation</label>
+                                                    </a>
+                                                </div>
+                                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                               </form> 
+                        </div>
+                        
+                      
+                        
+                    </div>
+                </div>
+            </div>
+            
+                            </div>
+ 						
+                        </div>
+                    </div>
+                </div><!--/.item-->
+                
+                
+               
+            </div><!--/.carousel-inner-->
+        </div><!--/.carousel-->
+        <a class="prev hidden-xs" href="#main-slider" data-slide="prev">
+            <i class="fa fa-chevron-left"></i>
+        </a>
+        <a class="next hidden-xs" href="#main-slider" data-slide="next">
+            <i class="fa fa-chevron-right"></i>
+        </a>
+        
+        
+        
+    </section><!--/#main-slider-->
+    
+    
+    <div class="container-fluid navbar-inverse mannavi navbar-navnew" style="height:41px !important;" >
+  <div class="container" style="padding:0 10px;">
+    <div class="navbar navbar-inverse marginbtom0 mannavi" role="navigation" style="border-radius:0; border:none; z-index:1; height:auto;">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" style="padding:0;" data-toggle="collapse" data-target=".navbar-collapse2"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+      </div>
+   <div class="navbar-collapse2 collapse" style="padding:0;">
+   <div class="row">
+   
+   <div class="col-sm-2"><a href="" id="" style="text-transform: capitalize; line-height:40px; font-size:16px !important; padding-left:40px;" class="navbar-navlink"  data-toggle="modal" data-target="#myModalprintsmscancle">Track Car</a><i class="fa fa-car fa-fw fa-1_5x sicon" style="cursor:pointer; color:#FFF; margin-top:0; position:absolute;"></i></div>
+   <div class="col-sm-3"><a href="" id="" style="text-transform: capitalize; line-height:40px; font-size:16px !important; padding-left:40px;" class="navbar-navlink"  data-toggle="modal" data-target="#myModalprintsmscancle">Print/SMS Ticket</a><i class="fa fa-print fa-fw fa-1_5x sicon" style="cursor:pointer; color:#FFF; margin-top:0; position:absolute;"></i></div>
+   <div class="col-sm-2"><a href=""  id="" style="text-transform: capitalize; line-height:40px; font-size:16px !important; padding-left:40px;" class="navbar-navlink" data-toggle="modal" data-target="#myModalprintsmscancle">Cancel Ticket</a><i class="fa fa-times fa-fw fa-1_5x sicon" style="cursor:pointer; color:#FFF; margin-top:0; position:absolute;"></i></div>
+   <div class="col-sm-2"><a href="" id="" data-toggle="modal" data-target="#myModalprintsmscancle" class="navbar-navlink" style="text-transform: capitalize; line-height:40px; font-size:16px !important; padding-left:40px;">Refund Status</a><i class="fa fa-exchange fa-fw fa-1_5x sicon" style="cursor:pointer; color:#FFF; margin-top:0; position:absolute;"></i></div>
+   <div class="col-sm-2"><a href="" data-toggle="modal" data-target="#myModalfeedbackss" class="navbar-navlink" id="" style="text-transform: capitalize; line-height:40px; font-size:16px !important; padding-left:40px;">Give Feedback</a><i class="fa fa-envelope fa-fw fa-1_5x sicon" style="cursor:pointer; color:#FFF; margin-top:0; position:absolute;"></i></div>
+   
+   </div>
+        
+       
+      </div>
+      <!--/.nav-collapse --> 
+    </div>
+  </div>
+</div>

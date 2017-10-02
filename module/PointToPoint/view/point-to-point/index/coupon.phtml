@@ -1,0 +1,36 @@
+<?php
+use Zend\Session\Container;
+$user_session = new Container('User');
+
+if($status)
+{
+    if($sCoupon===1)
+    {
+        echo "<div style='color:green;'>Coupon Applied</div>";
+        
+    }else if($sCoupon===0)
+    {
+        echo "<div style='color:green;'>Coupon is Valid but your amount is not applicable.</div>";
+        
+    }
+    ?>
+       
+    <div class="title"><span class="WebRupee"><b>Total Charge</b></span></div>
+    <input type="hidden" name="total_charge" id="total_charge" value="<?php echo round($totalbill);?>">
+    <input type="hidden" name="success_coupon" id="success_coupon" value="<?php echo $sCoupon; ?>">
+    <input type="hidden" name="applied_code" id="applied_code" value="<?php echo $appliedCode;?>">
+    <input type="hidden" name="point_coupon_id" id="point_coupon_id" value="<?php echo $point_coupon_id ?>">
+    <div class="price"><span class="WebRupee"><span class="WebRupee"> Rs. </span></span><span class="payaddon">
+    <?php echo round($totalbill);?></span></div></div> 
+<?php 
+        
+}else{
+    ?>    
+    <div style='color:red;'>This coupan is not valid.</div>
+    <div class="title"><span class="WebRupee"><b>Total Charge</b></span></div>
+    <input type="hidden" name="total_charge" id="total_charge" value="<?php echo round($totalbill);?>">
+    <div class="price"><span class="WebRupee"><span class="WebRupee"> Rs. </span></span><span class="payaddon">
+    <?php echo round($totalbill);?></span></div></div> 
+<?php        
+}
+ ?>

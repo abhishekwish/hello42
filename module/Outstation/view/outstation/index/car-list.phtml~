@@ -1,0 +1,1654 @@
+<?php
+$postedData = $this->postdata;
+$hours = $postedData['hours'][0];
+$minutes = $postedData['min'][0];
+
+$time = $hours . ":" . $minutes;
+$pickup_time = date('g:i A', strtotime($time));
+?> 
+<script language="javascript" type="text/javascript">
+    function togglemodify(id, btn_id) {
+        //alert(1);
+        //debugger;
+        var btnId = btn_id.v
+//            var e = document.getElementById(id);
+//            var b = document.getElementById(btn_id);
+        //            e.style.display = e.style.display == "none" ? "block" : "none";
+        //$("#1").css("display","block");
+        $("#modify_search").slideToggle(500);
+        if ($("#btnModify").val() == "Modify Search (+)") {
+            $("#btnModify").val("Modify Search (-)");
+        }
+        else {
+            $("#btnModify").val("Modify Search (+)");
+        }
+//            b.value = e.style.display == "block" ? "Hide Search" : "Change Search";
+//           
+//            b.value = e.style.display == "none" ? "Change Search" : "Hide Search";
+
+//            if (e.style.display = 'none') {
+//                e.style.display = 'block';
+//                b.value = "Hide search";
+
+//            }
+//            else  {
+//                e.style.display = 'none';
+//                b.value = "Change search";
+//            }
+
+    }
+
+    function gotoResult() {
+
+
+        if (Validate_Me()) {
+            if (TransValue())
+                return true;
+            else
+                return false;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    function getpaymentdetails(basecombid,subpackageid){
+        $.ajax({
+             type:'post' ,
+             //url: '<?php //echo $this->url('/outstation/index/bookingpaymentdetail'); ?>',
+             data:{base_comb_id:basecombid,sub_package_id:subpackageid},
+             success:function(data) {
+               //alert(data);
+               $('#update_div').html(data); 
+           }
+        });
+    }
+</script>
+
+<style type="text/css">
+    .box{       
+        display: none;              
+    }
+
+</style>     
+
+
+<section id="main_form" class="padding12top">
+
+
+    <div class="banner-bottom pcenter" > 
+        <!-- container -->
+        <div class="container">
+            <div class="col-sm-12">
+                <div class="" style="margin:0 0 10px; padding:0 0 10px;">
+                    <div class="col-md-3 overviueimg5" align="left" style="padding-left:0 !important;">
+                        <h4>Outstation OneWay</h4>
+                    </div>
+
+                    <div class="col-md-3 overviueimg5 pull-right" align="left">
+                        <select class="" ng-change="currencyChanged(selectedCurrency)" ng-options="currency.name for currency in availableCurrencies" ng-model="selectedCurrency" name="currency_selection">
+                            <option value="0">US Dollar (USD)</option>
+                            <option value="1">Indian Rupee (INR)</option>
+                            <option value="2">Algerian Dinar (DZD)</option>
+                            <option value="3">Argentine Peso (ARS)</option>
+                            <option value="4">Australian Dollar (AUD)</option>
+                            <option value="5">Bahraini Dinar (BHD)</option>
+                            <option value="6">Bangladeshi Taka (BDT)</option>
+                            <option value="7">Bolivian Boliviano (BOB)</option>
+                            <option value="8">Botswanan Pula (BWP)</option>
+                            <option value="9">Brazilian Real (BRL)</option>
+                            <option value="10">British Pound Sterling (GBP)</option>
+                            <option value="11">Brunei Dollar (BND)</option>
+                            <option value="12">Bulgarian Lev (BGN)</option>
+                            <option value="13">Cayman Islands Dollar (KYD)</option>
+                            <option value="14">Chinese Yuan Renminbi (CNY)</option>
+                            <option value="15">Colombian Peso (COP)</option>
+                            <option value="16">Costa Rican Colon (CRC)</option>
+                            <option value="17">Croatian Kuna (HRK)</option>
+                            <option value="18">Danish Krone (DKK)</option>
+                            <option value="19">Dominican Peso (DOP)</option>
+                            <option value="20">Egyptian Pound (EGP)</option>
+                            <option value="21">Estonian Kroon (EEK)</option>
+                            <option value="22">Euro (EUR)</option>
+                            <option value="23">Fijian Dollar (FJD)</option>
+                            <option value="24">Honduran Lempira (HNL)</option>
+                            <option value="25">Hong Kong Dollar (HKD)</option>
+                            <option value="26">Hungarian Forint (HUF)</option>
+                            <option value="27">Indonesian Rupiah (IDR)</option>
+                            <option value="28">Israeli New Sheqel (ILS)</option>
+                            <option value="29">Jamaican Dollar (JMD)</option>
+                            <option value="30">Japanese Yen (JPY)</option>
+                            <option value="31">Jordanian Dinar (JOD)</option>
+                            <option value="32">Kazakhstan Tenge (KZT)</option>
+                            <option value="33">Kuwaiti Dinar (KWD)</option>
+                            <option value="34">Macedonian Denar (MKD)</option>
+                            <option value="35">Malaysian Ringgit (MYR)</option>
+                            <option value="36">Maldivian Rufiyaa (MVR)</option>
+                            <option value="37">Mauritian Rupee (MUR)</option>
+                            <option value="38">Mexican Peso (MXN)</option>
+                            <option value="39">Moldovan Leu (MDL)</option>
+                            <option value="40">Moroccan Dirham (MAD)</option>
+                            <option value="41">Nepalese Rupee (NPR)</option>
+                            <option value="42">Netherlands Antillean Guilder (ANG)</option>
+                            <option value="43">New Taiwan Dollar (TWD)</option>
+                            <option value="44">New Zealand Dollar (NZD)</option>
+                            <option value="45">Omani Rial (OMR)</option>
+                            <option value="46">Pakistani Rupee (PKR)</option>
+                            <option value="47">Papua New Guinean Kina (PGK)</option>
+                            <option value="48">Paraguayan Guarani (PYG)</option>
+                            <option value="49">Philippine Peso (PHP)</option>
+                            <option value="50">Polish Zloty (PLN)</option>
+                            <option value="51">Qatari Rial (QAR)</option>
+                            <option value="52">Romanian Leu (RON)</option>
+                            <option value="53">Russian Ruble (RUB)</option>
+                            <option value="54">Salvadoran Colon (SVC)</option>
+                            <option value="55">Saudi Riyal (SAR)</option>
+                            <option value="56">Serbian Dinar (RSD)</option>
+                            <option value="57">Seychellois Rupee (SCR)</option>
+                            <option value="58">Sierra Leonean Leone (SLL)</option>
+                            <option value="59">Singapore Dollar (SGD)</option>
+                            <option value="60">Slovak Koruna (SKK)</option>
+                            <option value="61">South African Rand (ZAR)</option>
+                            <option value="62">South Korean Won (KRW)</option>
+                            <option value="63">Sri Lanka Rupee (LKR)</option>
+                            <option value="64">Swiss Franc (CHF)</option>
+                            <option value="65">Tanzanian Shilling (TZS)</option>
+                            <option value="66">Thai Baht (THB)</option>
+                            <option value="67">Trinidad and Tobago Dollar (TTD)</option>
+                            <option value="68">Tunisian Dinar (TND)</option>
+                            <option value="69">Turkish Lira (TRY)</option>
+                            <option value="70">Ugandan Shilling (UGX)</option>
+                            <option value="71">Ukrainian Hryvnia (UAH)</option>
+                            <option value="72">United Arab Emirates Dirham (AED)</option>
+                            <option value="73">Uzbekistan Som (UZS)</option>
+                            <option value="74">Venezuelan Bolìvar Fuerte (VEF)</option>
+                            <option value="75">Vietnamese Dong (VND)</option>
+                            <option value="76">Yemeni Rial (YER)</option>
+                            <option value="77">Zambian Kwacha (ZMK)</option>
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-12 sige_small">
+
+                <div class="choose">
+
+<?php //echo $this->partial('Outstation/index/commonbookingmodify.phtml', array('postdata' => $postedData)); ?>
+                </div>
+
+            </div>
+
+            <div class="banner-bottom-grids">
+
+                <div class="col-md-3 banner-bottom-grid widthpercent20" style="float:left;">
+                    <div class="top-destinations-grids" style="margin-top:0;">
+
+                        <div class="top-destinations-bottom padding_margin0">
+                            <div class="td-grids">
+
+                                <div class="summary">
+
+                                    <div class="left-div-form" style="border-bottom:1px solid #333; cursor:pointer;" onClick="javascript:togglemodify('1', 'btnBack');" href="#">
+                                        <h4>Modify Search</h4>
+                                    </div>
+                                    <div id="collapseleft" class="panel-collapse collapse">
+                                        <div class="left-div-form">
+                                            I Want to Cab*
+                                        </div>
+
+                                        <div class="left-div-form">
+
+                                            <select class="">
+                                                <option>New Delhi</option>
+                                                <option>Noida</option>
+
+                                            </select>
+
+                                        </div>
+
+                                        <div class="left-div-form">
+                                            Pickup Area
+                                        </div>
+
+                                        <div class="left-div-form">
+                                            <input type="text" class="form-control" value="Karol Bagh">
+                                        </div>
+
+                                        <div class="left-div-form">
+                                            Drop Area
+                                        </div>
+
+                                        <div class="left-div-form">
+                                            <input type="text" class="form-control" value="Noida">
+                                        </div>
+
+                                        <div class="left-div-form">
+                                            Pickup Address*
+                                        </div>
+
+                                        <div class="left-div-form">
+                                            <input type="text" class="form-control" value="29, DB Gupta Market, Karol Bagh">
+                                        </div>
+
+
+
+                                        <div class="left-div-form">
+                                            Date & Time
+                                        </div>
+
+                                        <div class="left-div-form">
+
+                                            <div class="col-sm-7 padding_margin0 col_smal_modify">
+                                                <input type="text" class="form-control" value="13-05-2017">
+                                            </div>
+
+                                            <div class="col-sm-4 pull-right padding_margin0 col_smal_modify" >
+                                                <input type="text" class="form-control" style="padding:0 5px;" value="11 PM">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="left-div-form">
+
+                                            <div class="col-sm-6 padding_margin0 col_smal_modify">
+                                                Adults*
+                                                <input type="text" class="form-control" value="2">
+                                            </div>
+
+                                            <div class="col-sm-6 pull-right  col_smal_modify" style="padding-right:0; padding-left:5px;" >
+                                                Child
+                                                <input type="text" class="form-control" style="padding:0 5px;" value="1">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="left-div-form">
+
+                                            <div class="col-sm-6 col_smal_modify padding_margin0">
+                                                Luggages
+                                                <input type="text" class="form-control" value="2">
+                                            </div>
+
+                                            <div class="col-sm-6 pull-right col_smal_modify  " style="padding-right:0; padding-left:5px;" >
+                                                No of Cars
+                                                <input type="text" class="form-control" style="padding:0 5px;" value="1">
+                                            </div>
+                                        </div>
+
+                                        <div class="left-div-form">
+                                            <a href="#" class="btn btn-lg col-sm-12 modify_search_but">Search</a>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="clearfix"> </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="top-destinations-grids" style="margin-top:0;">
+
+                        <div class="top-destinations-bottom padding_margin0">
+                            <div class="td-grids">
+
+
+                                <div class="summary">
+                                    <div class="left-div-form" style="border-bottom:1px solid #333; cursor:pointer" data-toggle="collapse" data-parent="#accordion" href="#collapsefilter">
+                                        <h4>Filters by</h4>
+                                    </div>            
+                                    <div id="collapsefilter" class="panel-collapse collapse in">
+                                        <div class="container-fluid left-div-form" style="background:#fff;">     
+                                            <div class="bcrm_toggle_cont" data-toggleid="6"> 
+
+                                                <div class="row mobile-hide">             
+                                                    <div class="col-md-12 col-sm-12 col-xs-12 tab sub-tab bcrm_toggle_btn open" data-toggleid="8">Search by car name           
+                                                    </div>         
+                                                </div>  
+
+                                                <div class="row form mobile-hide   bcrm_toggle_cont js_toggle_cont_except" data-toggleid="8">             
+                                                    <div class="col-md-12 col-sm-12 col-xs-12 by-car-name">
+                                                        <input value="Ford, Fiat, Kia, Toyota" class="bcrm_car_name_filter bcrm_watermark watermark" data-native="false" type="text">         
+                                                    </div> </div>
+
+                                                <div class="row">             
+                                                    <div class="col-md-12 col-sm-12 col-xs-12 simple-container">                 
+                                                        <div id="bcrm_location_all_container"><div class="container-fluid google-map hide-map">     
+
+                                                            </div></div>             
+                                                    </div>         
+                                                </div>  
+
+                                                <div class="row">             
+                                                    <div class="col-md-12 col-sm-12 col-xs-12 tab sub-tab bcrm_toggle_btn open" data-toggleid="2">                 Suppliers
+                                                    </div>         </div>        
+
+                                                <div id="car-vendors-list" class="bcrm_toggle_cont" data-toggleid="2">             
+
+                                                    <div class="row supplier">    
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         
+
+                                                            <span class="bcrm_checkbox">             
+                                                                <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="4" class="bcrm_results_filter_name">Antaeus </span>     </div>    
+
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 price">500.48 &#8377 </div> 
+
+                                                    </div>  
+
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Avis </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>  
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Avis </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>  
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Avis </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>  
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Avis </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>          
+
+                                                </div> 
+
+                                                <div id="car-vendors-list" class="bcrm_toggle_cont" data-toggleid="2">         
+
+                                                    <div class="row">             
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 tab sub-tab bcrm_toggle_btn open" data-toggleid="11">                 
+                                                            Fuel options
+                                                        </div>         
+                                                    </div> 
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Petrol </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Diesel </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">CNG </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>
+
+                                                </div>
+
+
+                                                <div id="car-vendors-list" class="bcrm_toggle_cont" data-toggleid="2">         
+
+                                                    <div class="row">             
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 tab sub-tab bcrm_toggle_btn open" data-toggleid="11">                 
+                                                            Review score
+                                                        </div>         
+                                                    </div> 
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">3 star </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">4 Star </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">5 Star </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>
+
+                                                </div>
+
+
+                                                <div id="car-vendors-list" class="bcrm_toggle_cont" data-toggleid="2">         
+
+                                                    <div class="row">             
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 tab sub-tab bcrm_toggle_btn open" data-toggleid="11">                 
+                                                            Car Type
+                                                        </div>         
+                                                    </div> 
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Mini </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Economy </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Compact </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>
+
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Standard </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Fullsize </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>
+
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Special </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Premium </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-6 col-sm-6 col-xs-6 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Luxury </span>     </div>     <div class="col-md-6 col-sm-6 col-xs-6 price">220.80 &#8377 </div> </div>
+
+                                                </div>
+
+
+                                                <div id="car-vendors-list" class="bcrm_toggle_cont" data-toggleid="2">         
+
+                                                    <div class="row">             
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 tab sub-tab bcrm_toggle_btn open" data-toggleid="11">                 
+                                                            Car Equipment
+                                                        </div>         
+                                                    </div> 
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Manual transmission </span>     </div>      </div>
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Auto transmission </span>     </div>  </div>
+
+                                                    <div class="row supplier">     
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 brand">         <span class="bcrm_checkbox " data-index="3">             <div class="title"><input value="" class="bcrm_results_filter" type="checkbox"> </div>        
+                                                            </span> &nbsp;
+                                                            <span data-index="3" class="bcrm_results_filter_name">Air Conditioning</span>     </div>      </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="clearfix"> </div>
+                            </div>
+
+                        </div>
+                    </div>      
+
+                </div>		
+
+
+                <div class="col-md-6 banner-bottom-grid widthpercent60 padding_margin0">
+
+
+
+
+
+
+
+                    <div class="destinations-grid-info tours tours1" style="margin-bottom:10px !important;">
+                        <div class="mapcantiner_inner1" style="padding:0 !important;">
+                            <div class="" style="margin:0 0 10px; padding:0 0 10px;">
+                                <div class="col-md-2 sightmargin overviueimgcar" align="left"> Car Type </div>
+                                <div class="col-md-2 sightmargin overviueimg2car" align="left"> </div>
+                                <div class="col-md-2 sightmargin overviueimg2car1" align="left" > <span class="vehicle_name">Departure</span><br>
+                                </div>
+                                <div class="col-md-2 sightmargin overviueimg2" align="left"> <span class="vehicle_name">Arrival</span><br>
+                                </div>
+
+                                <div class="col-md-2 sightmargin overviueimg2car1 padding_margin0" align="left" style="line-height:;" > <span class="vehicle_name">Duration & Price</span><br>
+                                </div>
+
+<!-- <div class="col-md-31 sightmargin overviueimg2" align="left"> <span class="fare_details">Price</span> </div>-->
+
+                                <!-- 
+                                              <div class="col-md-31 sightmargin overviueimg2" align="left">
+                                                                                           <span class="vehicle_name">No of Cars</span><br>
+                                                     
+                                                                          </div> --> 
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="clearfix"> </div>
+
+
+                    <!--  CAR LIST  ACCORDIAN START -->
+
+
+                    <div id="accordion" class="panel-group">
+                        
+                        <?php foreach($this->cabType as $cabtype){
+                                $cab_capacity       = $cabtype['cab_capacity']; 
+                                $Ac_NonAC           = $cabtype['ac_non_ac'];
+                                $luggage_capacity   = $cabtype['luggage_capacity'];
+                                
+                                $base_comb_id  = $cabtype['base_comb_id'];
+                                $subpackage_id  = $cabtype['subpackage_id'];
+                                
+                                // echo $this->PackageFare($base_comb_id,$subpackage_id);die;
+                                 $fare_details  = $this->PackageFare($base_comb_id,$subpackage_id);
+                                 $minimum_charge = $fare_details['minimum_charge'];
+                                 $per_km_charge = $fare_details['per_km_charge'];
+                                
+                                ?>
+                                        
+                                <div class="panel panel-default">
+                            <div>
+                                <h4 class="panel-title">
+                                    <div style="margin-top:20px;" >
+                                        <div style="padding:0 !important;" class="mapcantiner_inner1">
+                                            <?php  $form_posted_data  = $this->postdata; 
+                                          
+                                                    $trip_type  = $form_posted_data['outstation'];
+                                                    if($trip_type == 'Oneway'){
+                                                       $count_form_city = 1;
+                                                    }else if($trip_type == 'Roundtrip'){
+                                                        $count_form_city = 2 ;
+                                                    }else{
+                                                       $count_form_city  = count($form_posted_data['outstationFrom']); 
+                                                    }
+                                                   
+                                            ?>
+                                            
+                                            <?php for($i=0;$i<$count_form_city;$i++){
+                                                        $from_departure_date = date('d/m/Y',strtotime($form_posted_data['departure_date'][$i]));    
+                                                        $from_departure_time = date('h:m A',strtotime($form_posted_data['departure_time'][$i]));    
+                                                        
+                                                        $source_city      = $form_posted_data['outstationFrom'][$i];
+                                                        $destination_city = $form_posted_data['outstationTo'][$i];
+                                                        
+                                                        $distinationKmobj  = $this->citydistance->getCityDistanceInKm($source_city,$destination_city);
+                                                        $distinationKm     = $distinationKmobj->distance_km; 
+                                                        $total_min =0;
+                                                        $estimated_time= 0;
+                                                        $timesplit = 0;
+                                                        if($distinationKm > 0 ){                                                           
+                                                            $hours = floor($distinationKm / 60);
+                                                            $mins = $distinationKm % 60;
+                                                            $estimated_time     =  (str_pad($hours, 2, '0', STR_PAD_LEFT). ':' .str_pad($mins, 2, '0', STR_PAD_LEFT));
+                                                            
+                                                            $timesplit = explode(':',$estimated_time);
+                                                             $total_min =($timesplit[0]*60)+($timesplit[1])+($timesplit[2]>30?1:0);
+                                                        }
+                                                        
+                                                        $soruce_date   = date('Y-m-d',strtotime($form_posted_data['departure_date'][$i]));
+                                                        $soruce_time   = date('h:m',strtotime($form_posted_data['departure_time'][$i])); 
+                                                        $soruce_date_format = $soruce_date." ".$soruce_time; 
+                                                       
+                                                         
+                                                        $newtimestamp = strtotime($soruce_date_format. '+'.$total_min.'minute');
+                                                        $destination_date = date('d/m/Y', $newtimestamp); 
+                                                        $destination_time = date('H:i A', $newtimestamp);
+                                                      
+                                                        $total_distancekm_calulate = $minimum_charge * $form_posted_data['tour_days'][$i];
+                                                        $total_fare = $total_distancekm_calulate * $per_km_charge;
+                                                ?>
+                                            
+                                            <div style="margin:0 0 0; padding:0 0 0;" class="">
+                                                <div align="center" class="col-md-2 sightmargin overviueimgcar"> <span class="image_box padding_margin0"> <img src="images/vehicle.png"></span> <br>
+                                                    <p style="font-size:12px;"> <?php echo $cabtype['cab_type'];?> </p></div>
+                                                <div align="left" class="col-md-2 sightmargin padding_margin0">
+                                                    <div class="amenities">
+                                                        <ul>
+                                                            <li style="float:left; line-height:13px;  padding: 0 0 0 5px; text-align:center;"><i class="icon_pertion"></i><br>
+                                                                <br>
+                                                                <?php echo $cab_capacity ; ?></li>
+                                                            <li style="float:left; line-height:13px;  padding: 0 0 0 5px; text-align:center;"><i class="icon_lagguge"></i><br>
+                                                                <br>
+                                                               <?php echo $luggage_capacity; ?></li>
+                                                            <li style="float:left; line-height:13px;  padding: 0 0 0 5px; text-align:center;"><i class="icon_ac"></i><br>
+                                                                <br>
+                                                                <?php echo $Ac_NonAC; ?></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div align="left" class="col-md-31 sightmargin overviueimg2car1"> <span class="vehicle_name"><?php echo $form_posted_data['outstationFrom'][$i]; ?></span><br>
+                                                    <span class="vehicle_name"><?php echo $from_departure_date;?> <?php echo $from_departure_time; ?></span> </div>
+
+                                                <div align="left" class="col-md-31 sightmargin overviueimg2"> <span class="vehicle_name"><?php echo $form_posted_data['outstationTo'][$i];?></span><br>
+                                                    <span class="vehicle_name"><?php echo $destination_date; ?>&nbsp;&nbsp; <?php echo $destination_time;?></span> </div>
+
+                                                <div align="left" style="line-height:" class="col-md-2 sightmargin padding_margin0"> <span class="vehicle_name"><?php echo ($timesplit[0]>0)?$timesplit[0]."h":''; ?> <?php echo ($timesplit[1]>0)?$timesplit[1]."m":'' ;?> | <?php echo ($distinationKm>0)?$distinationKm."KM":''; ?> </span><br>
+                                                    <div style="line-height:; float:left;" class="vehicle_name"  >&#x20b9;<?php echo $total_fare; ?> </div><br>
+                                                    <div id="item_3" class="item" style="float:left; cursor:pointer;">
+                                                        Fare Details
+                                                        <div class="tooltip_description" style="display:none;" title="Item 3 Description">
+                                                            <table width="90%" align="center" cellspacing="5" cellpadding="5" style="color:#fff; ">
+                                                                <tr>
+                                                                    <td>Base Fare</td>
+                                                                    <td align="right">Rs 300</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Per KM Price</td>
+                                                                    <td align="right">Rs 7</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Distance</td>
+                                                                    <td align="right">50KM</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Tex (14.5%)</td>
+                                                                    <td align="right">Rs 100</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Total Fare</td>
+                                                                    <td align="right">Rs 500</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Base Fare</td>
+                                                                    <td align="right">Rs 300</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <?php if($i==0){?>
+                                                <div class="col-sm-2 padding_margin0 margintop10" align="center">
+                                                    <span href="#" class="btn btn-lg car_select_but">
+                                                        <input type="radio" name="select_car" onclick="getpaymentdetails('<?php echo $base_comb_id;?>','<?php echo $subpackage_id; ?>');"  style="height:10px; width:10px;"> Select</span>
+                                                </div>
+                                                <?php } ?>  
+                                            </div>
+                                            
+                                            <div style="width:100%; float:left; border-top:1px dotted #ccc;" align="center"></div>
+                                            <div class="clearfix"> </div>                                            
+                                            <div style="margin-top:20px;" ></div>
+                                             <?php } ?>
+                                            
+                                           <!-- <div id="collapseOne_<?php echo $cabtype['Id'];?>" class="panel-collapse collapse">
+                                                <div >
+                                                    <div style="margin-top:20px;" >
+                                                        <div style="padding:0 !important;" class="mapcantiner_inner1">
+                                                            <div style="margin:0 0 10px; padding:0 0 10px;" class="testimonial_box">
+                                                                <div align="center" class="col-md-2 sightmargin overviueimgcar"> <span class="image_box padding_margin0"> <img src="images/vehicle.png"></span> <br>
+                                                                    <p style="font-size:12px;"> Economy </p></div>
+                                                                <div align="left" class="col-md-2 sightmargin padding_margin0">
+                                                                    <div class="amenities">
+                                                                        <ul>
+                                                                            <li style="float:left; line-height:13px;  padding: 0 0 0 5px; text-align:center;"><i class="icon_pertion"></i><br>
+                                                                                <br>
+                                                                                3</li>
+                                                                            <li style="float:left; line-height:13px;  padding: 0 0 0 5px; text-align:center;"><i class="icon_lagguge"></i><br>
+                                                                                <br>
+                                                                                2</li>
+                                                                            <li style="float:left; line-height:13px;  padding: 0 0 0 5px; text-align:center;"><i class="icon_ac"></i><br>
+                                                                                <br>
+                                                                                AC</li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <div align="left" class="col-md-31 sightmargin overviueimg2car1"> <span class="vehicle_name">Delhi</span><br>
+                                                                    <span class="vehicle_name">15/11/2015/ 06:10AM</span> </div>
+
+
+                                                                <div align="left" style="line-height:" class="col-md-2 sightmargin padding_margin0"><br>
+                                                                    <span class="vehicle_name">4h 5m | 150 KM</span><br>
+
+
+                                                                </div>
+
+                                                                <div align="left" class="col-md-31 sightmargin overviueimg2"> <span class="vehicle_name">Noida</span><br>
+                                                                    <span class="vehicle_name">15/11/2015/ 10:10AM</span> </div>
+
+
+
+
+
+                                                                <div align="left" style="line-height:" class="col-md-2 sightmargin padding_margin0"> 
+                                                                    <div style="line-height:18px; font-size:14px; float:left;" class="vehicle_name"  > &#x20b9;1500 </div><br><br>
+
+                                                                    <div id="item_3" class="item" style="float:left; cursor:pointer;">
+                                                                        Fare Details
+                                                                        <div class="tooltip_description" style="display:none;" title="Item 3 Description">
+                                                                            <table width="90%" align="center" cellspacing="5" cellpadding="5" style="color:#fff; ">
+                                                                                <tr>
+                                                                                    <td>Base Fare</td>
+                                                                                    <td align="right">Rs 300</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Per KM Price</td>
+                                                                                    <td align="right">Rs 7</td>
+                                                                                </tr>
+
+                                                                                <tr>
+                                                                                    <td>Distance</td>
+                                                                                    <td align="right">50KM</td>
+                                                                                </tr>
+
+                                                                                <tr>
+                                                                                    <td>Tex (14.5%)</td>
+                                                                                    <td align="right">Rs 100</td>
+                                                                                </tr>
+
+                                                                                <tr>
+                                                                                    <td>Total Fare</td>
+                                                                                    <td align="right">Rs 500</td>
+                                                                                </tr>
+
+                                                                                <tr>
+                                                                                    <td>Base Fare</td>
+                                                                                    <td align="right">Rs 300</td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="clearfix"> </div>
+
+
+
+
+                                                        <div  style="margin-bottom:10px !important; background:none !important; border:none !important; padding:0;">
+                                                            <div class="mapcantiner_inner1" style="padding:0 !important;">
+                                                                <div class="" style="margin:0 0 10px; padding:0 0 10px;">
+                                                                    <div class="col-md-31 sightmargin overviueimg2car1 icon_fair" align="left"> <a href="#" class="cartypelink vehicle_name" data-toggle="modal" data-target="#myModal" style="width:120px;">Fair Rules</a> </div>
+                                                                    <div class="col-md-31 sightmargin overviueimg2car1 icon_bagage" align="left"> <a href="#" class="cartypelink vehicle_name" data-toggle="modal" data-target="#myModal">Baggage</a> </div>
+                                                                    <div class="col-md-31 sightmargin overviueimg2car1 icon_seating" align="left"> <a href="#" class="cartypelink vehicle_name" data-toggle="modal" data-target="#myModal" style="width:132px;">Seating Capacity</a> </div>
+                                                                    <div class="col-md-31 sightmargin overviueimg2car1 icon_amenities" align="left"> <a href="#" class="cartypelink vehicle_name" data-toggle="modal" data-target="#myModal">Aminities</a> </div>
+
+                                                                    <!-- 
+                                                                                  <div class="col-md-31 sightmargin overviueimg2" align="left">
+                                                                                                                               <span class="vehicle_name">No of Cars</span><br>
+                                                                                         
+                                                                                                              </div>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="clearfix"> </div>
+                                                        </div>
+
+
+
+
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+ <div style="width:100%; float:left; border-top:1px dotted #ccc;" align="center"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne_<?php echo $cabtype['Id'];?>"><img src="images/down_arrow.png" style="width:30px; margin-top: -16px;"></a></div>--> 
+                                        </div>
+
+
+
+                                    </div>
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="clearfix"> </div>
+                         <?php }?> 
+                    </div>
+
+
+
+
+
+
+                    <!--ACCORDIAN END-->
+
+
+
+                </div>
+
+                    <!--- RIGHT SIDE PAYMENT DETAIL  -->
+                      <?php // echo $this->partial('Outstation/index/bookingpaymentdetail.phtml', array('postdata' => $postedData)); ?>
+                    <!--- -->
+               
+                <div class="clearfix"> </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+</section>           
+
+
+
+
+
+
+<!--/#theam-->
+
+
+
+<section id="conatcat-info">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="media contact-info wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="600ms">
+                    <div class="pull-left">
+                        <i class="fa fa-phone"></i>
+                    </div>
+                    <div class="media-body">
+                        <h2>Have a question or need a custom quote?</h2>
+                        <p>Our team is here to help 24 hours a day, 7 days a week. +91-11 424 242 42
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--/.container-->    
+</section>
+
+<script>
+
+    $(function() {
+        var sidebar = $('.topbar');
+        var top = sidebar.offset().top - parseFloat(sidebar.css('margin-top'));
+
+        $(window).scroll(function(event) {
+            var y = $(this).scrollTop();
+            if (y >= top) {
+                sidebar.addClass('fixed');
+            } else {
+                sidebar.removeClass('fixed');
+            }
+        });
+    });
+</script>
+
+
+<script>
+    $(document).ready(function() {
+
+        $("#pickup_now").click(function() {
+            $("#datetime").hide();
+        });
+        $("#pickup_later").click(function() {
+            $("#datetime").show();
+        });
+
+        $("#local_booking").click(function() {
+            $("#local-booking").show();
+            $("#point-to-point").hide();
+            $("#ariport-transfer").hide();
+        });
+
+        $("#point_to_point").click(function() {
+            $("#local-booking").hide();
+            $("#point-to-point").show();
+            $("#ariport-transfer").hide();
+            ;
+        });
+
+
+        $("#airport_transfer").click(function() {
+            $("#local-booking").hide();
+            $("#point-to-point").hide();
+            $("#ariport-transfer").show();
+            ;
+        });
+
+
+
+    });
+</script>
+
+<!-- City selection print sms start-->
+
+<div class="modal fade" id="myModalprintsmscancle" role="dialog">
+    <div class="modal-dialog modal-dialogprint">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">
+
+                    Print/SMS Booking
+
+                </h2>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding:0 15px;">
+
+                    <div class="col-sm-12 price-one ">
+
+                        <!-- <div class="col-lg-12" style=" background: #c52d2f none repeat scroll 0 0; color: #fff; padding:5px;">
+                          <h2>Package-
+                                               <span style="font-size:14px;">4 Hours - 40 KM</span>
+                                               </h2></div>-->
+
+                        <div class="col-lg-12" style="background:#EFEFEF;">
+                            <label class="col-lg-12 padding0" style="text-align:left; color:#000;"> Booking No.  </label> 
+                            <input class="form-control" placeholder="Ticket No." style="border:1px solid #333;">
+
+                            <label class="col-lg-12 padding0" style="color:#000;">
+                                Mobile No.
+                            </label>
+
+                            <input class="form-control" placeholder="Mobile No." style="border:1px solid #333;">
+
+
+                            <label class="col-lg-12" style="color:#000; text-align:right; margin-top:5px;">
+                                <a href="#topheader" class="btn btn-primary"  role="button" id="local" onclick="booking_local();">Submit</a>
+
+                            </label>
+
+                        </div>
+
+
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer" style=" padding-top:2px !important;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- City selection print sms ends--> 
+
+<div class="modal fade" id="myModalfeedbackss" role="dialog">
+    <div class="modal-dialog  modal-dialogfeedback">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">
+
+                    Feedback
+                </h2>
+                <!--Click to select if we Exceeded, Met or Did Not meet your Expectations-->
+            </div>
+
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('input[type="radio"]').click(function() {
+                        if ($(this).attr("value") == "website") {
+                            $(".box").not(".mobileaap").hide();
+                            $(".box").not(".callcenter").hide();
+                            $(".website").show();
+                        }
+                        if ($(this).attr("value") == "android") {
+                            $(".box").not(".website").hide();
+                            $(".box").not(".callcenter").hide();
+                            $(".mobileaap").show();
+                        }
+                        if ($(this).attr("value") == "callcenter") {
+                            $(".box").not(".website").hide();
+                            $(".box").not(".mobileaap").hide();
+                            $(".callcenter").show();
+                        }
+                    });
+                });
+            </script>
+
+            <style type="text/css">
+                .box{
+
+                    display: none;
+
+
+                }
+
+            </style>
+<?=
+$this->serverurl() . $this->url();
+echo $_SERVER['PHP_SELF'];
+?>
+            <form id="feedbackform" method="post" autocomplete="off" action="<?php echo $this->basePath(); ?>/index/page/feedback"  onsubmit="return validfeedform(this.id);">
+                <div class="modal-body" style="height:500px; overflow:scroll;">
+                    <div class="row" style="padding:0 15px;">
+
+                        <div class="col-sm-12 plan price-one " style="background:#EFEFEF;">
+
+
+
+                            <div class="col-lg-12 feedback">
+
+                                <label class="col-sm-12" style="text-align:left;"> 
+                                    1. RESERVATION:- </label> 
+
+                                <div class="col-sm-3" >
+                                    Reservation is done through
+
+                                </div>
+
+                                <div class="col-sm-3" >
+                                    <input type="radio" name="resersvation" value="1"/> Website 
+
+                                </div>
+
+                                <div class="col-sm-3" >
+                                    <input type="radio" name="resersvation" value="2" /> Android Application
+
+                                </div>
+
+                                <div class="col-sm-3" >
+                                    <input type="radio" name="resersvation" value="3"/> Call Center
+
+                                </div>
+
+
+
+                            </div>
+
+                            <div class="box website" style="display:block;">
+                                <div class="col-lg-12 feedback">
+                                    <label class="col-sm-12" style="text-align:left;"> 
+                                        <strong> Website</strong>  </label> 
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the booking process 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="web_booking_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="web_booking_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="web_booking_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="web_booking_rate" />Very Good</label>
+
+                                    </div>
+
+
+
+
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the confirmation process
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="web_confirm_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="web_confirm_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="web_confirm_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="web_confirm_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            Rate the process on website 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="web_process_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="web_process_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="web_process_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="web_process_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            Over all how would you rate our services
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="web_service_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="web_service_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="web_service_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="web_service_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="box mobileaap">
+                                <div class="col-lg-12 feedback">
+                                    <label class="col-sm-12" style="text-align:left;"> 
+                                        <strong>Android Application</strong>  </label> 
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate our App  
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="And_app_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="And_app_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="And_app_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="And_app_rate" />Very Good</label>
+
+                                    </div>
+
+
+
+
+
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the booking process
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="And_book_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="And_book_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="And_book_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="And_book_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the confirmation process 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="And_confirm_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="And_confirm_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="And_confirm_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="And_confirm_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            Over all how would you rate our services
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="And_service_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="And_service_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="And_service_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="And_service_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="box callcenter">
+                                <div class="col-lg-12 feedback">
+                                    <label class="col-sm-12" style="text-align:left;"> 
+                                        <strong>Call Center </strong>  </label> 
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the booking process 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="Call_book_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="Call_book_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="Call_book_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="Call_book_rate" />Very Good</label>
+
+                                    </div>
+
+
+
+
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate  our agent  to answer your question
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="Call_agent_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="Call_agent_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="Call_agent_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="Call_agent_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate our  agent to follow your instructions 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="Call_instruc_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="Call_instruc_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="Call_instruc_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="Call_instruc_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the confirmation process 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="Call_confirmation_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="Call_confirmation_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="Call_confirmation_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="Call_confirmation_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            Over all how would you rate our services   
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="Call_services_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="Call_services_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="Call_services_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="Call_services_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="col-lg-12 feedback">
+
+                                <label class="col-sm-12" style="text-align:left;"> 
+                                    2. VEHICLES:- </label> 
+
+                            </div>
+
+                            <div class="">
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the reporting of vehicle 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="vehicle_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="vehicle_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="vehicle_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="vehicle_rate" />Very Good</label>
+
+                                    </div>
+
+
+
+
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the vehicle as requested
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="requested_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="requested_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="requested_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="requested_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How was your special instructions followed 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="insfollow_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="insfollow_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="insfollow_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="insfollow_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How was the vehicle condition
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="condition_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="condition_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="condition_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="condition_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How was the Air-Conditioning effective
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="effective_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="effective_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="effective_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="effective_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How was the cleanness and tidy of vehicle 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="cleanness_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="cleanness_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="cleanness_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="cleanness_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How Was the uniform and grooming
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="grooming_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="grooming_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="grooming_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="grooming_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-12 feedback">
+
+                                <label class="col-sm-12" style="text-align:left;"> 
+                                    2. BILLING:- </label> 
+
+                            </div>
+
+                            <div class="">
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate  the billing accuracy 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="accuracy_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="accuracy_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="accuracy_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="accuracy_rate" />Very Good</label>
+
+                                    </div>
+
+
+
+
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate receiving  invoice on time
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="invoice_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="invoice_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="invoice_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="invoice_rate" />Very Good</label>
+
+                                    </div>
+
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How will you rate your receiving invoice 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="receivingInv_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="receivingInv_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="receivingInv_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="receivingInv_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+
+
+                            </div>
+
+
+
+                            <div class="col-sm-8">
+
+
+                            </div>
+
+                            <div class="col-sm-4">
+                                <label class="col-lg-12" style="color:#000; text-align:center;">
+                                    <!-- <a href="#topheader" class="btn btn-primary"  role="button" id="local" onclick="booking_local();">Submit</a> -->
+                                    <input type="submit" value="submit" name="submit" class="btn btn-primary">
+
+                                </label>
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+            <div class="modal-footer" style=" padding-top:2px !important;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="max-width:500px;">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Benefits of logging in</h4>
+            </div>
+            <div class="modal-body" style="height:120px;">
+                <div class="">
+
+                    <div class="">
+                        <div id="home" class="tab-pane fade in active">
+
+                            <div style="width:50%; float:left;">
+
+                                <p><ul style="list-style:circle; margin-left:10px;">
+                                    <li>Faster Bookings </li>
+                                    <li>Track Travel History </li>
+                                    <li>Manage Your Profile </li>
+                                    <li>Deal Alerts </li><br>
+                                </ul></p>
+                            </div>
+                            <div style="width:40%; float:right;">
+                                <h5><strong>Not a member?</strong></h5>
+
+                                <p><a href="#" class="asregistra">Register Now</a></p>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

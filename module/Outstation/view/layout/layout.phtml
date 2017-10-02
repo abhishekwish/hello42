@@ -1,0 +1,17 @@
+<?php
+
+if($CURRENT_CONTROLLER_NAME=='Index' && $CURRENT_ACTION_NAME=='index'){
+    echo $this->render('_home_header.phtml');    
+    
+}else{
+    
+    echo $this->render('_top_header.phtml');
+    echo $this->render('_header_pages_banner.phtml');
+    echo $this->render('_header.phtml'); 
+}
+ echo $this->content;
+
+ echo $this->render('_footer.phtml');
+ ?>
+
+    

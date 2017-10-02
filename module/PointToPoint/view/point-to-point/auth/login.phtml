@@ -1,0 +1,124 @@
+<div class="modal-dialog modal-dialoglogin">
+    
+      <!-- Modal content-->
+      <div class="modal-content modal-dialoglogin1 login_form">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h2 class="modal-title">Login</h2>
+        </div>
+        <div class="modal-body">
+          <div class="row" style="padding:0 15px;">
+                   
+          <div class="col-sm-12 price-one ">
+              <form action="<?php echo $this->url('default',array('controller'=>'auth','action'=>'login')); ?>" name="loginForm" id="loginForm" method="post">        
+          
+          <div class="col-sm-6" style="border-right:1px solid #ccc;">
+          
+          <p class='invalid' style='display:none;color:red'>Invalid Username or Password</p>
+           <label class="col-lg-12" style="text-align:left;"> Email or Mobile  </label> 
+
+
+          	<input class="form-control"  id="login_user" name="login_user" placeholder="Email or Mobile">
+          
+            <label class="col-lg-12" style="color:#000;">
+            Password
+             </label>
+      
+           <input class="form-control" type="password" id="login_pass" name="login_pass" placeholder="Password">
+            
+             
+             <label class="col-lg-12" style="color:#000; text-align:center; margin-top:5px;">
+             <input type="submit" id="signin"   value="Login" class="btn btn-primary"  />
+                      
+                           </label>
+            <label>
+             <a href="#" id="forgot_form" class="loginhome"> Forgot password?</a><br />
+
+            <a href="<?php echo $this->basePath(); ?>/login/index/signup" class="loginhome">New User? Create Account </a>
+            </label>
+            <label class="col-lg-12" style="color:#000;"></label>
+            <div align="center"> OR</div>
+            <label class="col-lg-12" style="color:#000;"></label>
+            
+            <div class="col-md-12" id="renderMe" style="padding:0 !important;" >
+            <a class="btn btn-danger btn-social btn-google-plus" style="background:#c52d2f; color:#fff;">
+							<i class="fa fa-google-plus"></i>Sign in with Google Plus
+						  </a></div>
+                          
+                     <label class="col-lg-12" style="color:#000;"></label>     
+                          <div class="col-md-6" id="renderMe" align="left" style="padding:0 !important;">
+							 <a class="btn btn-danger btn-social btn-google-plus" style="background:#3c55a2; color:#fff;">
+							<i class="fa fa-facebook  fa-1x"></i>
+                            
+                            Connect using Facebook
+						  </a>
+                          
+                         
+                            </div>
+                             <label class="col-lg-12" style="color:#000;"></label>
+						    <div class="spance col-md-6">
+								<script type="in/Login">
+								</script>
+								</div>
+            
+          </div>
+              </form>
+          <div class="col-sm-5 right" style="float:right;" align="right">
+           <label class="col-lg-12" style="padding-right:0 !important;"> 
+    <a href="<?php echo $this->basepath(); ?>/login/index/myaccount" class="loginhome">My Profile </a> </label>
+    <label class="col-lg-12" style="padding-right:0 !important;"> 
+    <a href="<?php echo $this->basepath(); ?>/login/index/myaccount" class="loginhome">Manage Bookings</a>
+    </label>
+    <label class="col-lg-12" style="border-bottom:1px solid #ccc;"></label>
+    <label class="col-lg-12" style="padding-right:0 !important;"> 
+   <a href="#" class="loginhome"> View E-Ticket</a></label>
+    <label class="col-lg-12" style="padding-right:0 !important;"> 
+   <a href="#" class="loginhome"> Cancel Bookings</a></label>
+    <label class="col-lg-12" style="padding-right:0 !important;"> 
+    <a href="#" class="loginhome">Change Travel Date</a></label>
+    <label class="col-lg-12" style="padding-right:0 !important;"> 
+    <a href="#" class="loginhome">Check Refund Status</a></label>
+    <label class="col-lg-12" style="padding-right:0 !important;"> 
+    <a href="#" class="loginhome">View Holiday Booking</a></label>
+    <label class="col-lg-12" style="padding-right:0 !important;"> 
+    <a href="#" class="loginhome">Make Payment</a></label>
+  
+          	
+            
+          </div>
+          
+           </div>
+                          
+          </div>
+          
+          <div></div>
+          
+        </div>
+        
+        
+        <div class="modal-footer" style=" padding-top:2px !important;">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+          
+          
+          <script>
+  $(document).ready(function () {
+
+    $("#loginForm").validate({
+        
+        rules: {
+            login_user: {
+                required: true
+            },
+            login_pass:{
+                required:true
+            }
+        },
+        submitHandler: function (form) { 
+            form.submit();
+        }
+    });
+
+});
+  </script>
+          

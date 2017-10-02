@@ -1,0 +1,695 @@
+<?php   $postedData = $this->postdata;
+$departure_time = $postedData['departure_time'][0];
+$minutes = $postedData['min'][0];
+
+$time = $departure_time.":".$minutes; 
+$pickup_time =  date('g:i A', strtotime($time)); 
+
+$trip_type = $postedData['outstation'];
+
+$countoutstationFrom =  count($postedData['outstationFrom']);
+?> 
+<div class="destinations-grid-info tours">
+        <div class="td-grids">
+          <div class="col-md-31 sightmargin col_smal_modify" align="left">
+            <p>
+              <label><strong> From:</strong></label>
+              <br>
+              <label> <?php echo $postedData['outstationFrom'][0];?></label>
+            </p>
+          </div>
+          <div class="col-md-31 sightmargin col_smal_modify" align="left">
+            <p>
+              <label><strong> To:</strong></label>
+              <br>
+              <label> <?php echo $postedData['outstationTo'][0];?></label>
+            </p>
+          </div>
+          <div class="col-md-31 sightmargin col_smal_modify" align="left">
+            <p>
+              <label><strong> Departure Date:</strong></label>
+              <br>
+              <label> <?php echo $postedData['departure_date'][0];?></label>
+            </p>
+          </div>
+          <div class="col-md-31 sightmargin col_smal_modify" align="left">
+            <p>
+              <label><strong> Pickup Address:</strong></label>
+              <br>
+              <label> <?php echo $postedData['pickup_address'];?></label>
+            </p>
+          </div>
+          <div class="col-md-31 sightmargin col_smal_modify" align="left">
+            <p>
+              <label><strong> Pickup Time:</strong></label>
+              <br>
+              <label> <?php echo $pickup_time; ?></label>
+            </p>
+          </div>
+          <div class="col-md-31 sightmargin col_smal_modify" align="left">
+            <p>
+              <label><strong> Adults:</strong>  <?php echo $postedData['adults'];?></label>
+              <br>
+              <label> <strong> Children:</strong> <?php echo $postedData['childs'];?></label>
+            </p>
+          </div>
+          <!--<div class="col-md-31 col-md-31car sightmargin col_smal_modify" align="left">
+            <p>
+              <label> <strong>Car Type:</strong></label>
+              <br>
+              <label> Sedan</label>
+            </p>
+          </div>-->
+          <div class="col-md-31 sightmargin col_smal_modify" align="left">
+            <p>
+              <input id="btnModify" class="modify_text" value="Modify Search (+)" onClick="javascript:togglemodify('1','btnBack');" type="button">
+            </p>
+          </div>
+          <div class="col-xs-2 td-right" style="width:100%;">
+            <div id="modify_search" style="width: 100%; border-radius: 5px; display:none ;"> 
+              
+              <!--Outstation Start-->
+              <form id="outstationForm" name="outstationForm" method="post" action="#">
+                   <input type="hidden" id="aid" value="<?php echo $countoutstationFrom; ?>" />
+                <div id="booking_outstation" class="portlet portlet-purple" style="border-width: 1px 0px 0px; border-style: solid none none; border-color: rgb(210, 210, 210) -moz-use-text-color -moz-use-text-color; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; margin: 0px; float:left;">
+                  <div id="inputSizing" class="panel-collapse in" style="height: auto;">
+                    <div class="portlet-body " style="padding:10px 15px 0;">
+                      <div id="popAlert" style="display:none;">
+                        <div class="row">
+                          <div class="col-sm-12" style="text-align:center;">
+                            <p style="border-bottom: 1px solid #ff3f3f; color:#ff3f3f">We can not confirm online booking as such short notice.<br>
+                              Please call (011)42424242 for immediate bookings and confirmations.</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!--================alert for same day============ --> 
+                      
+                      <!--================alert for same day============ -->
+                      
+                      <div class="row">
+                        <div class="form-group clearfix" style="margin:0;">
+                          <div class="col-sm-11" style="margin-left:10px;">
+                            <label class="radio-inline specs mytip" name="optionsInlineRadios" onclick="roundtrip()" value="1" checked="" style="margin-left;:10px;">
+                            <div class="radioWrap" id="point_to_point">
+                                <input type="radio" name="outstation"  value="Oneway" id="oneway" <?php if($trip_type=='Oneway'){?>checked="checked" <?php }?>/>
+                            
+                              <span></span></div>
+                            <span id="outstation_roundtrip">OneWay</span>
+                            </label>
+                            <label class="radio-inline specs" style="padding-left:47px !important;">
+                            <div class="radioWrap" id="local_booking">
+                              <input type="radio" name="outstation"  value="Roundtrip" id="roundtrip" <?php if($trip_type=='Roundtrip'){?>checked="checked" <?php }?>
+                              <span></span></div>
+                            <span id="outstation_oneway">Roundtrip</span>
+                            </label>
+                            <label class="radio-inline specs" style="padding-left:47px !important;">
+                            <div class="radioWrap" id="airport_transfer">
+                              <input type="radio" name="outstation" value="Multicity" id="multicity" <?php if($trip_type=='Multicity'){?>checked="checked" <?php }?>>
+                              <span></span></div>
+                            <span id="outstation_multicity"> Multicity</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!--multiple country-->
+                      <div> 
+                        
+                        <!--multiple country End-->
+                        <hr style="margin:5px auto 10px;">
+                        <div class="row clearfix" style="padding-bottom:10px; display: block">
+                          <div class="col-sm-12">
+                      
+                              <div class="form-group-lg form-group-icon-left" style="display:none"  id="oneway_outstation">
+                                  <div class="row">
+                                      <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left form-group-filled">
+                                                            <label>From<span class="red_text">*</span></label>
+                                                            <input type="text" class="form-control required suggesstionbox" name="outstationFrom[]" id="outstation_From_oneway" value="<?php echo $postedData['outstationFrom'][0];?>">
+                                                            <input type="hidden" name="outstation_From_cityid[]" id="outstationcityid_From_oneway" value='<?php echo $postedData['outstation_From_cityid'][0];?>' />
+                                                            <div id="suggesstionbox_From_oneway"></div>
+                                                            <?php //echo $this->formElement($form->get('outstationFrom'));?>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <label>To<span class="red_text">*</span></label>
+                                                            <?php //echo $this->formElement($form->get('outstationTo'));?>
+                                                            <input type="text" class="form-control required suggesstionbox" name="outstationTo[]" id="outstation_To_oneway" value="<?php echo $postedData['outstationTo'][0];?>" >                                                 
+                                                            <input type="hidden" name="outstation_To_cityid[]" id="outstationcityid_To_oneway" value='<?php echo $postedData['outstation_To_cityid'][0];?>' />
+                                                            <div id="suggesstionbox_To_oneway"></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 padding0">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <label>Departure<span class="red_text">*</span></label>
+                                                            <input  placeholder="" id="departure_date_0" class="form-control regencydatepicar datedepature" name="departure_date[]" value="<?php echo $postedData['departure_date'][0];?>" type="text" readonly="readonly">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <label class="col-sm-12">&nbsp; </label>
+                                                            <label class="col-sm-4 padding0">
+                                                                <div class="select-style">
+                                                                    <input type="text" class="inputMaterial"  name="departure_time[]"  value="<?php echo $postedData['departure_time'][0]; ?>">
+<!--                                                                    <!--<select name="departure_time[]"  size="1" class="form-control">
+                                                                        <option value="">Hrs</option>
+                                                                     <?php for($j=0;$j<=24;$j++){ ?>
+                                                                        <option value="<?php echo $j; ?>" <?php if($postedData['departure_time'][0]==$j){?> selected="selected" <?php }?> ><?php echo $j; ?></option>
+                                                                    <?php }?>     
+                                                                    </select>-->
+                                                                </div>
+                                                            </label>
+
+                                                            
+                                                            <div class="col-md-4  padding0">
+                                                                <div class="form-group-lg form-group-icon-left">
+
+                                                                    <label class="">
+                                                                        <input type="text" name="tour_days[]" id="tour_days_0" value="<?php echo $postedData['tour_days'][0]; ?>" class="form-control" placeholder="No of days" style="padding:0 2px; text-align:center;">
+                                                                    </label>
+
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                      
+                                  </div>
+                              </div>
+                              
+                              
+                              <div class="form-group-lg form-group-icon-left" style="display:none"  id="roundtrip_outstation">
+                                   <div class="row">
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left form-group-filled">
+                                                            <label>From<span class="red_text">*</span></label>
+                                                            <input type="text" class="form-control required suggesstionbox" name="outstationFrom[]" id="outstation_From_toway" value="<?php echo $postedData['outstationFrom'][0];?>">
+                                                              <input type="hidden" name="outstation_From_cityid[]" id="outstationcityid_From_toway" value='<?php echo $postedData['outstation_From_cityid'][0];?>' />
+                                                            <div id="suggesstionbox_From_toway"></div>
+                                                            <?php //echo $this->formElement($form->get('outstationFrom'));?>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <label>To<span class="red_text">*</span></label>
+                                                            <?php //echo $this->formElement($form->get('outstationTo'));?>
+                                                            <input type="text" class="form-control required suggesstionbox" name="outstationTo[]" id="outstation_To_toway" value="<?php echo $postedData['outstationTo'][0];?>" >                                                 
+                                                            <input type="hidden" name="outstation_To_cityid[]" id="outstationcityid_To_toway" value='<?php echo $postedData['outstation_To_cityid'][0];?>' />
+                                                            <div id="suggesstionbox_To_toway"></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 padding0">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <label>Departure<span class="red_text">*</span></label>
+                                                            <input  placeholder="" id="departure_date_0" class="form-control regencydatepicar datedepature" name="departure_date[]" value="<?php echo $postedData['departure_date'][0];?>" type="text" readonly="readonly">
+                                                        </div>
+                                                    </div>
+
+                                         <div class="col-md-2 padding0">
+                                            <div class="form-group-lg form-group-icon-left">                                                            
+                                                <label class="col-sm-4 padding0">
+
+                                                        <input type="text" class="inputMaterial clockpicker"  name="departure_time[]"  value="<?php echo $postedData['departure_time'][0]; ?>">
+<!--                                                                    <select name="departure_time[]"  size="1" class="form-control">
+                                                            <option value="">Hrs</option>
+                                                         <?php for($j=0;$j<=24;$j++){ ?>
+                                                            <option value="<?php echo $j; ?>" <?php if($postedData['departure_time'][0]==$j){?> selected="selected" <?php }?> ><?php echo $j; ?></option>
+                                                        <?php }?>     
+                                                        </select>-->
+
+                                                </label>
+
+                                          </div> 
+                                             
+                                         </div>
+                                                   <div class="col-md-2 padding0">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <label>Return<span class="red_text">*</span></label>
+                                                            <input  placeholder="" id="departure_date_1" class="form-control regencydatepicar datedepature" name="departure_date[]" value="<?php echo $postedData['departure_date'][1];?>" type="text" readonly="readonly">
+                                                        </div>
+                                                    </div> 
+                                       
+                                                    <div class="col-md-2 padding0">
+                                                        <div class="form-group-lg form-group-icon-left">                                                            
+                                                            <label class="col-sm-4 padding0">
+                                                                
+                                                                    <input type="text" class="inputMaterial clockpicker"  name="departure_time[]"  value="<?php echo $postedData['departure_time'][1]; ?>">
+<!--                                                                    <select name="departure_time[]"  size="1" class="form-control">
+                                                                        <option value="">Hrs</option>
+                                                                     <?php for($j=0;$j<=24;$j++){ ?>
+                                                                        <option value="<?php echo $j; ?>" <?php if($postedData['departure_time'][0]==$j){?> selected="selected" <?php }?> ><?php echo $j; ?></option>
+                                                                    <?php }?>     
+                                                                    </select>-->
+                                                               
+                                                            </label>
+
+                                                      </div>    
+                                                        
+                                                        <div class="col-md-4  padding0">
+                                                            <div class="form-group-lg form-group-icon-left">
+
+                                                                <label class="">
+                                                                    <input type="text" name="tour_days[]" id="tour_days_0" value="<?php echo $postedData['tour_days'][0]; ?>" class="form-control" placeholder="No of days" style="padding:0 2px; text-align:center;">
+                                                                </label>
+
+
+                                                            </div>
+
+                                                        </div>
+                                                       
+
+
+                                                    </div>
+                            
+                                                </div>
+                                  
+                                  <!--<div class="row">
+                                      <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left form-group-filled">
+                                                            <label>From<span class="red_text">*</span></label>
+                                                            <input type="text" class="form-control required suggesstionbox" name="outstationFrom[]" id="outstation_From_toway2" value="<?php echo $postedData['outstationFrom'][1];?>">
+                                                            <div id="suggesstionbox_From_toway2"></div>
+                                                            <?php //echo $this->formElement($form->get('outstationFrom'));?>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <label>To<span class="red_text">*</span></label>
+                                                            <?php //echo $this->formElement($form->get('outstationTo'));?>
+                                                            <input type="text" class="form-control required suggesstionbox" name="outstationTo[]" id="outstation_To_toway2" value="<?php echo $postedData['outstationTo'][1];?>" >                                                 
+                                                            <div id="suggesstionbox_To_toway2"></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 padding0">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <label>Departure<span class="red_text">*</span></label>
+                                                            <input  placeholder="" id="departure_date_1" class="form-control regencydatepicar datedepature" name="departure_date[]" value="<?php echo $postedData['departure_date'][1];?>" type="text" readonly="readonly">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <label class="col-sm-12">&nbsp; </label>
+                                                            <label class="col-sm-4 padding0">
+                                                                <div class="select-style">
+                                                                    <select name="departure_time[]"  size="1" class="form-control">
+                                                                        <option value="">Hrs</option>
+                                                                     <?php for($j=0;$j<=24;$j++){ ?>
+                                                                        <option value="<?php echo $j; ?>" <?php if($postedData['departure_time'][1]==$j){?> selected="selected" <?php }?> ><?php echo $j; ?></option>
+                                                                    <?php }?>     
+                                                                    </select>
+                                                                </div>
+                                                            </label>
+
+                                                            <label class="col-sm-4 padding-left0">
+                                                                <div class="select-style">
+                                                                    <select name="min[]" id="" size="1" class="form-control">
+                                                                        <option value="">Min</option>
+                                                                        <?php for($j=0;$j<=60;$j++){ ?>
+                                                                        <option value="<?php echo $j; ?>" <?php if($postedData['min'][1]==$j){?> selected="selected" <?php }?> ><?php echo $j; ?></option>
+                                                                    <?php }?>    
+                                                                    </select>
+                                                                </div>
+                                                            </label>
+                                                            <div class="col-md-4  padding0">
+                                                                <div class="form-group-lg form-group-icon-left">
+
+                                                                    <label class="">
+                                                                        <input type="text" name="tour_days[]" id="tour_days_0" value="<?php echo $postedData['tour_days'][1]; ?>" class="form-control" placeholder="No of days" style="padding:0 2px; text-align:center;">
+                                                                    </label>
+
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                  </div>-->
+                              </div>
+                              
+                              <!-- Multi Trip start -->
+                                <div class="form-group-lg form-group-icon-left" style="display:none"  id="multitrip_outstation">
+
+                                  <?php for($i=0;$i<$countoutstationFrom;$i++){ ?>             
+                                  <div class="row" id="row_id_<?php echo $i;?>">
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left form-group-filled">
+                                                            <label>From<span class="red_text">*</span></label>
+                                                            <input type="text" class="form-control required suggesstionbox" name="outstationFrom[]" id="outstation_From_<?php echo $i;?>" value="<?php echo $postedData['outstationFrom'][$i];?>">
+                                                             <input type="hidden" name="outstation_From_cityid[]" id="outstationcityid_From_<?php echo $i;?>" value='<?php echo $postedData['outstation_From_cityid'][$i];?>' />
+                                                            <div id="suggesstionbox_From_<?php echo $i;?>"></div>
+                                                            <?php //echo $this->formElement($form->get('outstationFrom'));?>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <label>To<span class="red_text">*</span></label>
+                                                            <?php //echo $this->formElement($form->get('outstationTo'));?>
+                                                            <input type="text" class="form-control required suggesstionbox" name="outstationTo[]" id="outstation_To_<?php echo $i;?>" value="<?php echo $postedData['outstationTo'][$i];?>" >                                                 
+                                                             <input type="hidden" name="outstation_To_cityid[]" id="outstationcityid_To_<?php echo $i;?>" value='<?php echo $postedData['outstation_To_cityid'][$i];?>' />
+                                                            <div id="suggesstionbox_To_<?php echo $i;?>"></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 padding0">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <label>Departure<span class="red_text">*</span></label>
+                                                            <input  placeholder="" id="departure_date_<?php echo $i;?>" class="form-control regencydatepicar datedepature" name="departure_date[]" value="<?php echo $postedData['departure_date'][$i];?>" type="text" readonly="readonly">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <label class="col-sm-12">&nbsp; </label>
+                                                            <label class="col-sm-4 padding0">
+                                                                <div class="select-style">
+                                                                    <input type="text" class="inputMaterial"  name="departure_time[]"  value="<?php echo $postedData['hour'][$i];?>">
+                                                                        <span class="input-group-addon">
+                                                                            <span class="glyphicon glyphicon-time"></span>
+                                                                        </span>
+                                                                        <label>Time</label>
+<!--                                                                    <select name="departure_time[]"  size="1" class="form-control">
+                                                                        <option value="">Hrs</option>
+                                                                     <?php for($j=0;$j<=24;$j++){ ?>
+                                                                        <option value="<?php echo $j; ?>" <?php if($postedData['departure_time'][$i]==$j){?> selected="selected" <?php }?> ><?php echo $j; ?></option>
+                                                                    <?php }?>     
+                                                                    </select>-->
+                                                                </div>
+                                                            </label>
+
+<!--                                                            <label class="col-sm-4 padding-left0">
+                                                                <div class="select-style">
+                                                                    <select name="min[]" id="" size="1" class="form-control">
+                                                                        <option value="">Min</option>
+                                                                        <?php for($j=0;$j<=60;$j++){ ?>
+                                                                        <option value="<?php echo $j; ?>" <?php if($postedData['min'][$i]==$j){?> selected="selected" <?php }?> ><?php echo $j; ?></option>
+                                                                    <?php }?>    
+                                                                    </select>
+                                                                </div>
+                                                            </label>-->
+                                                            <div class="col-md-4  padding0">
+                                                                <div class="form-group-lg form-group-icon-left">
+
+                                                                    <label class="">
+                                                                        <input type="text" name="tour_days[]" id="tour_days_<?php echo $i;?>" value="<?php echo $postedData['tour_days'][$i]; ?>" class="form-control" placeholder="No of days" style="padding:0 2px; text-align:center;">
+                                                                    </label>
+
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                            
+                                                </div>
+                                  <?php }?>
+                                    <!--multicity div -->			
+<!--                                  <div class="col-md-12" id="multy_Outstation" style="display: none">                  -->
+                                        <div id="addCityForm" ></div>
+                                        <div class="col-sm-3 padding0" >
+                                                <div id="addCitybutton" onclick="addCitybutton();" style="width: auto; float:left; font-family: arial; background: #333; font-weight: bold;padding: 4px 10px; border: 1px solid #000;"> <a href="#" style="color:white" id="outstation_addcity">+ Add</a> </div>
+
+                                        </div>
+<!--                                  </div>-->
+			<!--End multicity div-->   
+                                </div>
+                                                     
+                           </div>
+<div class="col-sm-12 padding0">
+                                            <div class="col-md-2">
+                                                <div class="form-group-lg form-group-select-plus">
+                                                    <label>No. of Adults</label>
+
+                                                    <div class="select-style">
+                                                        <select class="form-control" name="adults">
+                                                            <?php for($h=1;$h<10;$h++){?>
+                                                            <option value="<?php echo $h;?>" <?php if($postedData['adults']==$h){?> selected="selected" <?php }?> ><?php echo $h;?></option>
+                                                            <?php }?>
+                                                        </select>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group-lg form-group-select-plus">
+
+                                                    <label>No. of Children</label>
+
+                                                    <div class="select-style">
+                                                        <select class="form-control" name="childs">
+                                                            <option value="">Select Children</option>
+                                                           <?php for($ch=1;$ch<=10;$ch++){ ?>
+                                                            <option value="<?php echo $ch; ?>" <?php if($postedData['childs']==$ch) {?> selected="selected" <?php } ?> ><?php echo $ch; ?></option>
+                                                           <?php }?>                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group-lg form-group-select-plus">
+
+                                                    <label>No. of Luggages</label>
+
+                                                    <div class="select-style">
+                                                        <select class="form-control" name="luggage">
+                                                            <?php for($lug=1;$lug<=10;$lug++){ ?>
+                                                               <option value="<?php echo $lug; ?>" <?php if($postedData['luggage']==$lug) {?> selected="selected" <?php } ?> ><?php echo $lug; ?></option>
+                                                           <?php }?>     
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group form-group-lg form-group-select-plus">
+
+                                                    <label>No of Cars *</label>
+
+                                                    <div class="select-style">
+
+                                                        <select name="cars" id="cars" size="1" class="form-control">
+                                                            <?php for($car=1;$car<=10;$car++){ ?>
+                                                            <option value="<?php echo $car; ?>" <?php if($postedData['cars']==$car){?> selected="selected" <?php }?> ><?php echo $car; ?></option>
+                                                           <?php }?>     
+                                                        </select>
+
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                            
+                              <div class="col-sm-3 margintop10">
+                                     <input type="submit" name="search" value="Search" class="btn btn-primary"/>
+                              </div>
+
+                        </div>
+                       
+                      </div>
+                      
+                     
+                    
+                  
+                      
+                   
+                      
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <!--Outstation End--> 
+              
+            </div>
+          </div>
+          <div class="clearfix"> </div>
+        </div>
+      </div>
+
+<script> 
+    $(document).ready(function() {
+        
+         $('.clockpicker').clockpicker()
+            .find('input').change(function() {
+        console.log(this.value);
+        });
+        var input = $('#single-input').clockpicker({
+            placement: 'bottom',
+            align: 'left',
+            autoclose: true,
+            'default': 'now'
+        });
+        
+        <?php if($trip_type=='Oneway'){ ?>
+             $('#oneway_outstation').show();
+             $('#roundtrip_outstation').find('input,select').attr('disabled','disabled');
+             $('#multitrip_outstation').find('input,select').attr('disabled','disabled');
+        <?php }?>
+        <?php if($trip_type=='Roundtrip'){ ?>
+             $('#roundtrip_outstation').show();
+             $('#oneway_outstation').find('input,select').attr('disabled','disabled');
+             $('#multitrip_outstation').find('input,select').attr('disabled','disabled');
+        <?php }?>    
+         <?php if($trip_type=='Multicity'){ ?>
+             $('#multitrip_outstation').show();
+             $('#oneway_outstation').find('input,select').attr('disabled','disabled');
+             $('#roundtrip_outstation').find('input,select').attr('disabled','disabled');
+        <?php }?> 
+        $(".suggesstionbox").keyup(function(){
+             var This_id = $(this).attr("id");   
+             var currentid_arr  = This_id.split('_');
+             var second_val = currentid_arr[1];
+             var third_val = currentid_arr[2];            
+		$.ajax({
+		type: "POST",
+               async : false,
+		url: "http://localhost/hellozf2-outstation/public/outstation/startdestination",
+		data:{start_destination:$(this).val()},
+		beforeSend: function(){
+			$("#"+This_id).css("background","#FFF url(http://localhost/hellozf2-outstation/public/images/LoaderIcon.gif) no-repeat 165px");
+		},
+		success: function(data){
+                    //alert("#suggesstionbox_"+second_val+"_"+third_val);
+			$("#suggesstionbox_"+second_val+"_"+third_val).show();
+			$("#suggesstionbox_"+second_val+"_"+third_val).html(data);
+			//$("#outstationFrom").css("background","#FFF");
+		}
+		});
+	});
+        
+     $("#roundtrip").click(function() {
+           $('#oneway_outstation').hide();
+           $("#roundtrip_outstation").show();          
+           $("#multitrip_outstation").hide();
+            
+            $('#roundtrip_outstation').find('input,select').attr('disabled',false);
+            $('#oneway_outstation').find('input,select').attr('disabled','disabled');
+            $('#multitrip_outstation').find('input,select').attr('disabled','disabled');
+        });
+        $("#oneway").click(function() {
+            $('#oneway_outstation').show();
+            $("#roundtrip_outstation").hide();          
+            $("#multitrip_outstation").hide();
+            
+            $('#roundtrip_outstation').find('input,select').attr('disabled','disabled');
+            $('#oneway_outstation').find('input,select').attr('disabled',false);
+            $('#multitrip_outstation').find('input,select').attr('disabled','disabled');
+        });
+
+        $("#multicity").click(function() { 
+            $('#oneway_outstation').hide();
+            $("#roundtrip_outstation").hide();          
+            $("#multitrip_outstation").show();     
+            
+            $('#roundtrip_outstation').find('input,select').attr('disabled','disabled');
+            $('#oneway_outstation').find('input,select').attr('disabled','disabled');
+            $('#multitrip_outstation').find('input,select').attr('disabled',false);;
+        });   
+}); 
+function autosuggestion(){
+	  $(".suggesstionbox").keyup(function(){
+             var This_id = $(this).attr("id");   
+             var currentid_arr  = This_id.split('_');
+             var second_val = currentid_arr[1];
+             var third_val = currentid_arr[2];
+		$.ajax({
+		type: "POST",
+                async : false,
+		url: "http://localhost/hellozf2-outstation/public/outstation/startdestination",
+		data:{start_destination:$(this).val()},
+		beforeSend: function(){
+			$("#"+This_id).css("background","#FFF url(http://localhost/hellozf2-outstation/public/images/LoaderIcon.gif) no-repeat 165px");
+		},
+		success: function(data){
+                   // alert("#suggesstionbox_"+second_val+"_"+third_val);
+			$("#suggesstionbox_"+second_val+"_"+third_val).show();
+			$("#suggesstionbox_"+second_val+"_"+third_val).html(data);
+			//$("#outstationFrom").css("background","#FFF");
+		}
+		});
+	});
+ }
+ function departureDate(){
+  $('.datedepature').datepicker({dateFormat: 'dd-mm-yy',minDate:(0), maxDate:(365),
+                    onSelect: function(){ 
+						var total_days = '1' ;
+						var prev_departid;
+                                                var selecteddatepicker_id = $(this).attr('id');                                                
+						var tabId = selecteddatepicker_id.split("_").pop();                                               
+						if(tabId>=1){
+						  prev_departid = tabId - 1;						  
+						  var predatepicker_id = selecteddatepicker_id.split(''); 
+						  predatepicker_id.splice(predatepicker_id.lastIndexOf('_'),2,'_'+prev_departid);
+						  predatepicker_id = predatepicker_id.join(''); 							
+						}                      
+						var start = $('#'+predatepicker_id).datepicker('getDate');
+						var end   = $('#'+selecteddatepicker_id).datepicker('getDate');
+						
+                        if (end!='' && start!='' && start<= end) {
+				total_days   = parseInt((end - start) / (1000 * 60 * 60 * 24));
+				if(total_days!=null){
+					total_days   = total_days+1;						                         
+				}
+                          $('#tour_days_'+prev_departid).val(total_days);
+                        }
+                    }        
+     });
+ }
+ 
+  function selectCountry(val,divid) {                    
+        var suggestbox_rest='';
+        var suggestbox_div ='';
+        var inputbox_id ='';
+        suggestbox_div  = divid;                
+        suggestbox_rest = suggestbox_div.substr(14);
+         //console.log(suggestbox_rest);
+        inputbox_id   = "outstation"+suggestbox_rest;   
+       
+            $("#"+inputbox_id).val(val);            
+            $("#"+suggestbox_div).hide(); 
+             roundtripdestination(inputbox_id);
+            }
+            
+  function roundtripdestination(inputbox_id){ 
+       var trip_val = ($('input:radio[name=outstation]:checked').val());
+        if(inputbox_id=='outstation_To_0' && trip_val=='Roundtrip'){
+          var from1_val  = $('#outstation_From_0').val();
+          var to1_val  = $('#outstation_To_0').val();
+            $('#outstation_From_1').val(to1_val);
+            $('#outstation_To_1').val(from1_val);
+        }
+      }
+ function addCitybutton(){
+	
+	//debugger;
+     var rid = document.getElementById("aid").value;
+
+ $("#addCityForm").append('<div class="row multiplerow" ><div class="Xbtn" onclick="mcClose($(this).parent())">X</div><div class="col-md-2"><div class="form-group-lg form-group-icon-left form-group-filled"><label>From<span class="red_text">*</span></label><input type="text" class="form-control suggesstionbox" name="outstationFrom[]" id="outstation_From_'+rid+'"><div id="suggesstionbox_From_'+rid+'"></div></div></div><div class="col-md-2"><div class="form-group-lg form-group-icon-left"><label>To<span class="red_text">*</span></label><input type="text" class="form-control suggesstionbox" name="outstationTo[]" id="outstation_To_'+rid+'"><div id="suggesstionbox_To_'+rid+'"></div></div></div><div class="col-md-2 padding0"><div class="form-group-lg form-group-icon-left"><label>Departure<span class="red_text">*</span></label><input  placeholder=""  id="departure_date_'+rid+'" class="form-control regencydatepicar datedepature" name="departure_date[]" type="text"></div></div><div class="col-md-4"><div class="form-group-lg form-group-icon-left"><label class="col-sm-12">&nbsp; </label><label class="col-sm-4 padding0"><div class="select-style"><select name="departure_time" size="1" class="form-control"><option selected="selected" value="1">Hrs</option><option value="2">2 </option><option value="3">3 </option><option value="4">4 </option><option value="5">5 </option></select></div></label><label class="col-sm-4 padding-left0"><div class="select-style"><select name="ctl00$cph_main$roomsNo" id="cph_main_roomsNo" size="1" class="form-control" onchange="showRooms();"><option selected="selected" value="1">Min</option><option value="2">2 </option><option value="3">3 </option><option value="4">4 </option><option value="5">5 </option></select></div></label><div class="col-md-4  padding0"><div class="form-group-lg form-group-icon-left"><label class=""><input type="text" name="tour_days[]" id="tour_days_'+rid+'" class="form-control" placeholder="No of days" style="padding:0 2px; text-align:center;"></label></div></div></div></div></div></div>');
+autosuggestion();
+departureDate();
+// var site_url = jQuery.cookie('BaseUrl');
+ //var url = site_url+'/tunnel/menu/allcities';
+   rid = (rid - 1) + 2;
+  document.getElementById("aid").value = rid;
+ } 
+</script>

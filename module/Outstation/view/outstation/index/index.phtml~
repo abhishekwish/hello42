@@ -1,0 +1,1657 @@
+  
+<?php
+$url = $this->url('home', array(), array('force_canonical' => true));
+echo $this->headScript()->prependFile($url . 'js/autocomplete.js')
+?>
+<script>
+
+    function autosuggestion() {
+    	alert(dsf);
+        $(".suggesstionbox").keyup(function() {
+            var This_id = $(this).attr("id");
+            var currentid_arr = This_id.split('_');
+            var second_val = currentid_arr[1];
+            var third_val = currentid_arr[2];
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: "http://localhost/zf-project/moh-zf2/public/outstation/startdestination",
+                data: {start_destination: $(this).val()},
+                beforeSend: function() {
+                    $("#" + This_id).css("background", "#FFF url(http://localhost/zf-project/moh-zf2/public/images/LoaderIcon.gif) no-repeat 165px");
+                },
+                success: function(data) {
+                    // alert("#suggesstionbox_"+second_val+"_"+third_val);
+                    $("#suggesstionbox_" + second_val + "_" + third_val).show();
+                    $("#suggesstionbox_" + second_val + "_" + third_val).html(data);
+                    //$("#outstationFrom").css("background","#FFF");
+                }
+            });
+        });
+    }
+
+
+    function departureDate() {
+        $('.datedepature').datepicker({dateFormat: 'dd-mm-yy', minDate: (0), maxDate: (365),
+            onSelect: function() {
+                var total_days = '1';
+                var prev_departid;
+                var selecteddatepicker_id = $(this).attr('id');
+                var tabId = selecteddatepicker_id.split("_").pop();
+                if (tabId >= 1) {
+                    prev_departid = tabId - 1;
+                    var predatepicker_id = selecteddatepicker_id.split('');
+                    predatepicker_id.splice(predatepicker_id.lastIndexOf('_'), 2, '_' + prev_departid);
+                    predatepicker_id = predatepicker_id.join('');
+                }
+                var start = $('#' + predatepicker_id).datepicker('getDate');
+                var end = $('#' + selecteddatepicker_id).datepicker('getDate');
+
+                if (end != '' && start != '' && start <= end) {
+                    total_days = parseInt((end - start) / (1000 * 60 * 60 * 24));
+                    if (total_days != null) {
+                        total_days = total_days + 1;
+                    }
+                    $('#tour_days_' + prev_departid).val(total_days);
+                }
+            }
+        });
+    }
+
+
+
+    function selectCountry(cityid, val, divid) {
+        var suggestbox_rest = '';
+        var suggestbox_div = '';
+        var inputbox_id = '';
+        var city_id_val = '';
+        suggestbox_div = divid;
+        suggestbox_rest = suggestbox_div.substr(14);
+        //console.log(suggestbox_rest);
+        inputbox_id = "outstation" + suggestbox_rest;
+        city_id_val = "outstationcityid" + suggestbox_rest;
+        $("#" + inputbox_id).val(val);
+        $("#" + city_id_val).val(cityid);
+        $("#" + suggestbox_div).hide();
+        roundtripdestination(inputbox_id);
+    }
+
+    function roundtripdestination(inputbox_id) {
+        var trip_val = ($('input:radio[name=outstation]:checked').val());
+        if (inputbox_id == 'outstation_To_0' && trip_val == 'Roundtrip') {
+            var from1_val = $('#outstation_From_0').val();
+            var to1_val = $('#outstation_To_0').val();
+            $('#outstation_From_1').val(to1_val);
+            $('#outstation_To_1').val(from1_val);
+        }
+    }
+
+    function addCitybutton() {
+
+        //debugger;
+        var rid = document.getElementById("aid").value;
+
+        $('#addCityForm').append('<div class="row multiplerow" style="margin-bottom:40px;" ><div class="Xbtn" onclick="mcClose($(this).parent())">X</div><div class="col-md-2"><div class="form-group-lg form-group-icon-left form-group-filled"><div class="group"><input type="text" class="inputMaterial suggesstionbox" name="outstationFrom[]" id="outstation_From_' + rid + '"><div id="suggesstionbox_From_' + rid + '"></div><span class="highlight"></span><span class="bar"></span><label>From</label></div></div></div><div class="col-md-2"><div class="form-group-lg form-group-icon-left"><div class="group"><input type="text" class="inputMaterial suggesstionbox required" name="outstationTo[]" id="outstation_To_' + rid + '"><div id="suggesstionbox_To_' + rid + '"></div><span class="highlight"></span><span class="bar"></span><label>To</label></div></div></div><div class="col-md-2"><div class="form-group-lg form-group-icon-left"><div class="col-sm-7 padding0"><div class="group"><input  id="departure_date_' + rid + '" class="inputMaterial regencydatepicar datedepature" name="departure_date[]" type="text"><span class="highlight"></span><span class="bar"></span><label>Departure</label></div></div><div class="col-sm-5 padding0"><div class="group"><div class="input-group clockpicker" data-placement="bottom" data-align="left" data-donetext="Done"><input type="text" class="inputMaterial clockpicker"  name="departure_time[]"  value=""><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span><label>Time</label></div></div></div></div></div><div class="col-md-2"><div class="form-group-lg form-group-icon-left"><div class="group"> <input type="text" name="tour_days[]" id="tour_days_' + rid + '" class="inputMaterial" ><span class="highlight"></span><span class="bar"></span><label>No of Days</label></div></div></div></div>');
+        autosuggestion();
+        departureDate();
+         $('.clockpicker').clockpicker()
+            .find('input').change(function() {
+        console.log(this.value);
+    });
+    var input = $('#single-input').clockpicker({
+        placement: 'bottom',
+        align: 'left',
+        autoclose: true,
+        'default': 'now'
+    });
+// var site_url = jQuery.cookie('BaseUrl');
+        //var url = site_url+'/tunnel/menu/allcities';
+        rid = (rid - 1) + 2;
+        document.getElementById("aid").value = rid;
+    }
+</script>
+<section id="main_form" class="padding12top" style="display:;margin-top:20px;">
+
+    <div class="container">
+
+        <?php
+        // $status = 0;
+        //$form = $this->form;
+        //$form->setAttribute('action', $this->url('pointtopoint', array('action' => 'point')));
+        // $form->prepare();
+        // echo $this->form()->openTag($form);
+        ?>
+
+        <div class="slide-margin">
+            <div class="col-sm-12">
+                <div class="search-tabs search-tabs-bg search-tabs-nobox search-tabs-lift-top">
+                    <div class="tabbable">
+
+                        <div class="tab-content1">
+
+                            <div class="tab-pane fade in active" id="pointtopoint_form">
+                               <!--<span><h2 style="margin-top:0;">Outstation Booking</h2></span>-->
+                                <form method="post" name="outstation_from" id="outstation_from" action="">
+                                    <input type="hidden" id="aid" value="4" />
+
+                                    <div class="row">
+                                        <div class="col-md-10 padding0 spanclass" style="margin-bottom:40px; border-bottom:1px solid #ccc;">
+
+
+                                            <div class="input-daterange" data-date-format="M d, D">								
+                                                <div class="col-sm-2">
+
+                                                    <span><input type="radio" name="outstation"  value="Roundtrip" id="roundtrip" checked="checked"></span>
+                                                    <span> Roundtrip </span>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <span><input type="radio" name="outstation"  value="Oneway" id="oneway"></span>
+                                                    <span>  Oneway</span>
+                                                </div>
+
+                                                <div class="col-sm-2">
+                                                    <span><input type="radio" name="outstation" value="Multicity" id="multicity"></span>
+                                                    <span>   Multicity</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group-lg form-group-icon-left" id="roundtrip_Outstation" style="margin-bottom:40px;">
+
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left form-group-filled">
+
+                                                            <div class="group">   
+                                                                <input type="text" class="inputMaterial required suggesstionbox" name="outstationFrom[]" id="outstation_From_0">
+                                                                 <input type="hidden" name="outstationFrom[]" id="outstation_From_1">
+                                                                <input type="hidden" name="outstation_From_cityid[]" id="outstationcityid_From_0" value='' />
+                                                                <input type="hidden" name="outstation_From_cityid[]" id="outstationcityid_From_1" value='' />
+                                                                <div id="suggesstionbox_From_0"></div>
+
+                                                                <span class="highlight"></span>
+                                                                <span class="bar"></span>
+                                                                <label>From</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <div class="group"> 
+                                                                <input type="text" class="inputMaterial required suggesstionbox" name="outstationTo[]" id="outstation_To_0" >
+                                                                <input type="hidden"  name="outstationTo[]" id="outstation_To_1" >
+                                                                <input type="hidden" name="outstation_To_cityid[]" id="outstationcityid_To_0" value='' />
+                                                                <input type="hidden" name="outstation_To_cityid[]" id="outstationcityid_To_1" value='' />
+                                                                <div id="suggesstionbox_To_0"></div>
+
+                                                                <span class="highlight"></span>
+                                                                <span class="bar"></span>
+                                                                <label>To</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <div class="col-sm-7 padding0">                                                  
+                                                                <div class="group">      
+                                                                    <input  id="departure_date_0" class="inputMaterial regencydatepicar datedepature" name="departure_date[]" type="text">
+
+                                                                    <span class="highlight"></span>
+                                                                    <span class="bar"></span>
+                                                                    <label>Departure</label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-5 padding0">
+
+                                                                <div class="group">
+                                                                    <div class="input-group clockpicker" data-placement="bottom" data-align="left" data-donetext="Done">
+                                                                        <input type="text" class="inputMaterial"  name="departure_time[]"  value="">
+                                                                        <span class="input-group-addon">
+                                                                            <span class="glyphicon glyphicon-time"></span>
+                                                                        </span>
+                                                                        <label>Time</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2" id="round_trip">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <div class="col-sm-7 padding0">                                                  
+                                                                <div class="group">  
+                                                                    <input  id="departure_date_1" class="regencydatepicar inputMaterial datedepature" name="departure_date[]" type="text" >
+
+                                                                    <span class="highlight"></span>
+                                                                    <span class="bar"></span>
+                                                                    <label>Return</label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-5 padding0">
+
+                                                                <div class="group">
+                                                                    <div class="input-group clockpicker" data-placement="bottom" data-align="left" data-donetext="Done">
+                                                                        <input type="text" name="departure_time[]"  class="inputMaterial" >
+                                                                        <span class="input-group-addon">
+                                                                            <span class="glyphicon glyphicon-time"></span>
+                                                                        </span>
+                                                                        <label>Time</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <div class="group">  
+                                                                <input type="text" name="tour_days[]" id="tour_days_0" class="inputMaterial" >                                                              
+                                                                <span class="highlight"></span>
+                                                                <span class="bar"></span>
+                                                                <label>No of Days</label>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+
+
+
+                                                <div>
+                                                </div>
+
+                                            </div>
+
+
+
+                                            <div class="form-group-lg form-group-icon-left" id="multy_Outstation" style="display:none;">
+
+                                                <div class="row" style="margin-bottom:40px;">
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left form-group-filled">
+
+                                                            <div class="group">      
+                                                                <input type="text" class="inputMaterial required suggesstionbox" name="outstationFrom[]" id="outstation_From_2">
+                                                                <input type="hidden" name="outstation_From_cityid[]" id="outstationcityid_From_2" value='' />
+                                                                <div id="suggesstionbox_From_2"></div>
+                                                                <span class="highlight"></span>  
+                                                                <span class="bar"></span>
+                                                                <label>From</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <div class="group">      
+                                                                <input type="text" class="inputMaterial required suggesstionbox" name="outstationTo[]" id="outstation_To_2" > 
+                                                                <input type="hidden" name="outstation_To_cityid[]" id="outstationcityid_To_2" value='' />
+                                                                <div id="suggesstionbox_To_2"></div>
+                                                                <span class="highlight"></span>
+                                                                <span class="bar"></span>
+                                                                <label>To</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <div class="col-sm-7 padding0">                                                  
+                                                                <div class="group">      
+                                                                    <input  id="departure_date_2" class="inputMaterial regencydatepicar datedepature" name="departure_date[]" type="text">
+
+                                                                    <span class="highlight"></span>
+                                                                    <span class="bar"></span>
+                                                                    <label>Departure</label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-5 padding0">
+
+                                                                <div class="group">
+                                                                    <div class="input-group clockpicker" data-placement="bottom" data-align="left" data-donetext="Done">
+                                                                        <input type="text" class="inputMaterial"  name="departure_time[]"  value="">
+                                                                        <span class="input-group-addon">
+                                                                            <span class="glyphicon glyphicon-time"></span>
+                                                                        </span>
+                                                                        <label>Time</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+
+
+
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <div class="group">      
+                                                                <input type="text" name="tour_days[]" id="tour_days_2" class="inputMaterial">  
+                                                                <span class="highlight"></span>
+                                                                <span class="bar"></span>
+                                                                <label>No of Days</label>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row" style="margin-bottom:40px;">
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left form-group-filled">
+
+                                                            <div class="group">      
+                                                                <input type="text" class="inputMaterial suggesstionbox" name="outstationFrom[]" id="outstation_From_3">
+                                                                <input type="hidden" name="outstation_From_cityid[]" id="outstationcityid_From_3" value='' />
+                                                                <div id="suggesstionbox_From_3"></div>
+
+                                                                <span class="highlight"></span>
+                                                                <span class="bar"></span>
+                                                                <label>From</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <div class="group"> 
+                                                                <input type="text" class="inputMaterial suggesstionbox" name="outstationTo[]" id="outstation_To_3">
+                                                                <input type="hidden" name="outstation_To_cityid[]" id="outstationcityid_To_3" value='' />
+                                                                <div id="suggesstionbox_To_3"></div>
+
+                                                                <span class="highlight"></span>
+                                                                <span class="bar"></span>
+                                                                <label>To</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2">
+
+
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <div class="col-sm-7 padding0">                                                  
+                                                                <div class="group"> 
+                                                                    <input  id="departure_date_3" class="inputMaterial regencydatepicar datedepature" name="departure_date[]" type="text" />
+                                                                    <span class="highlight"></span>
+                                                                    <span class="bar"></span>
+                                                                    <label>Departure</label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-5 padding0">
+
+                                                                <div class="group">
+                                                                    <div class="input-group clockpicker" data-placement="bottom" data-align="left" data-donetext="Done">
+                                                                        <input type="text" name="departure_time[]"  class="inputMaterial"  >
+                                                                        <span class="input-group-addon">
+                                                                            <span class="glyphicon glyphicon-time"></span>
+                                                                        </span>
+                                                                        <label>Time</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+
+
+
+                                                        </div>
+
+                                                    </div>
+
+
+
+
+                                                    <div class="col-md-2">
+                                                        <div class="form-group-lg form-group-icon-left">
+                                                            <div class="group">      
+                                                                <input type="text" class="inputMaterial" id="tour_days_3" >
+                                                                <span class="highlight"></span>
+                                                                <span class="bar"></span>
+                                                                <label>No of Days</label>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div id="addCityForm" ></div>
+
+                                                <div class="col-sm-3 padding0" >
+                                                    <div id="addCitybutton" onclick="addCitybutton();" style="width: auto; float:left; font-family: arial; background: #333; font-weight: bold;padding: 4px 10px; border: 1px solid #000;"> <a href="#" style="color:white" id="outstation_addcity">+ Add</a> </div>
+
+                                                </div>
+                                                <div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="col-sm-12 padding0" style="margin-bottom:30px;">
+                                            <div class="col-md-2">
+                                                <div class="form-group-lg form-group-select-plus">
+
+
+                                                    <div class="group">      
+                                                        <div class="spanclass">No. of Adult</div>
+                                                        <span class="bar"></span>
+                                                        <div class="select-style">
+                                                            <select class="inputMaterial" >
+                                                                <option>1</option>
+                                                                <option>2 </option>
+                                                                <option>3 </option>
+                                                                <option >4 </option>
+                                                                <option>5 </option>
+                                                            </select>
+                                                        </div>
+                                                        <span class="highlight"></span>
+                                                        <span class="bar"></span>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-2">
+                                                <div class="form-group-lg form-group-select-plus">
+
+
+                                                    <div class="group">      
+                                                        <div class="spanclass">No. of Children</div>
+                                                        <span class="bar"></span>
+                                                        <div class="select-style">
+                                                            <select class="inputMaterial" >
+                                                                <option selected="selected">Select Children</option>
+                                                                <option>1</option>
+                                                                <option>2</option>
+                                                                <option>3</option>
+                                                                <option >4</option>
+                                                                <option>5</option>
+                                                            </select>
+                                                        </div>
+                                                        <span class="highlight"></span>
+                                                        <span class="bar"></span>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-2">
+                                                <div class="form-group-lg form-group-select-plus">
+
+                                                    <div class="group">      
+                                                        <div class="spanclass">No. of Luggages</div>
+                                                        <span class="bar"></span>
+                                                        <div class="select-style">
+                                                            <select class="inputMaterial" >
+                                                                <option selected="selected">Select Luggages</option>
+                                                                <option>1</option>
+                                                                <option>2 </option>
+                                                                <option>3 </option>
+                                                                <option >4 </option>
+                                                                <option>5 </option>
+                                                            </select>
+                                                        </div>
+                                                        <span class="highlight"></span>
+                                                        <span class="bar"></span>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group form-group-lg form-group-select-plus">
+
+                                                    <div class="group">      
+                                                        <div class="spanclass">No of Cars *</div>
+                                                        <span class="bar"></span>
+                                                        <div class="select-style">
+                                                            <select class="inputMaterial" >
+                                                                <option selected="selected">Select No of Cars</option>
+                                                                <option value="1">1 </option>
+                                                                <option value="2">2 </option>
+                                                                <option value="3">3 </option>
+                                                                <option value="4">4 </option>
+                                                                <option value="5">5 </option>
+                                                            </select>
+                                                        </div>
+                                                        <span class="highlight"></span>
+                                                        <span class="bar"></span>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-sm-12 padding0" style="margin-bottom:30px;">
+                                            <div class="col-md-4">
+
+                                                <div class="group">      
+                                                    <div class="spanclass" style="float:left;">Coming Mode is Flight </div>
+
+                                                    <div class="col-sm-6 padding0">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group-lg form-group-select-plus">
+
+                                                                <span> <input type="radio" name="pickup" id="pickup_later"> </span> <span>Yes </span>
+
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6">
+                                                            <div class="form-group-lg form-group-select-plus">
+
+
+
+                                                                <span> <input type="radio" name="pickup" id="pickup_now"> </span> <span>No </span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div class="form-group-lg form-group-select-plus">
+
+
+
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-sm-6 padding0"  id="datetime" style="float:left; display:none;">
+
+                                                <div class="col-md-4 ">
+                                                    <div class="form-group-lg form-group-select-plus">
+                                                        <div class="group">      
+                                                            <input class="inputMaterial" type="text" placeholder="Air254">
+                                                            <span class="highlight"></span>
+                                                            <span class="bar"></span>
+                                                            <label>Flight No</label>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group-lg form-group-select-plus">
+
+
+
+                                                        <div class="group">      
+                                                            <input class="inputMaterial" type="text" placeholder="8:10">
+                                                            <span class="highlight"></span>
+                                                            <span class="bar"></span>
+                                                            <label>Flight Time</label>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+
+                                            </div> 
+
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            <div class="input-daterange" data-date-format="M d, D">
+                                                <div class="row">
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group form-group-lg form-group-icon-left">
+
+
+                                                            <div class="group">      
+                                                                <input class="inputMaterial" type="text" placeholder="Choose Location">
+                                                                <span class="highlight"></span>
+                                                                <span class="bar"></span>
+                                                                <label>Pickup Address*</label>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>          
+
+                                        <div class="col-sm-12 padding0" style="height:30px;">
+                                            <div class="col-md-6">
+                                                <div class="form-group-lg form-group-select-plus spanclass">
+                                                    <span><input type="checkbox"></span>
+
+                                                    Accept the Terms and Conditions 
+
+
+                                                </div>
+                                            </div>
+
+
+
+
+
+
+                                        </div>
+
+                                    </div>
+                                    <!-- <button class="btn btn-primary btn-lg" type="submit">Search Car</button>-->
+
+                                    <button class="btn btn-primary btn-lg" type="submit">Search Car</button>
+                                </form>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+</div>
+
+</section>           
+
+
+
+
+
+
+<!--/#theam-->
+
+
+<section id="recent-works" class="padding12top padding5topbot">
+    <div class="container">
+        <div class="center wow fadeInDown">
+            <h2>Tarif for Local Booking</h2>
+
+        </div>
+
+
+        <div class="col-md-12 table-responsive">
+            <h3  class="localfarebgorange2">Local Hire ( Delhi) </h3>
+            <table class="table table-hover table-striped tablecen" id="bootstrap-table"  style="border:1px solid #ddd;">
+                <tr>
+                    <th align="center">Car Type</th>
+                    <th align="center">Packages</th>
+                    <th align="center">Price</th>
+                    <th align="center">Extra/KM</th>
+                    <th align="center">Extra/hour</th>
+                    <th align="center"></th>
+                </tr>
+                <tr>
+                    <th rowspan="4"  width="10%"  height="30" align="center" valign="top" style="border:1px solid #ddd">Economy <br>
+                        <img alt="" class="localimg" src="images/economycar.png"> </th>
+                    <th align="center"><span  class="loc4e1" style="color:#000;">4 Hrs - 40 KM</span> </th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc4e2" style="color:#000;"> 800 </span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc4e3" style="color:#000;">10 </span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc4e4" style="color:#000;">100 </span></th>
+                    <th align="center"><a onclick="booking_local();" id="" role="button" class="btn btn-primaryred btn_fare" href="<?php echo $this->basePath(); ?>#topheader">Book</a> </th>
+                </tr>
+                <tr>
+                    <th align="center"><span  class="loce1" style="color:#000;">8 Hrs - 80 KM</span> </th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loce2" style="color:#000;">  1500</span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loce3" style="color:#000;">10 </span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loce4" style="color:#000;">100 </span></th>
+                    <th align="center"><a onclick="booking_local();" id="" role="button" class="btn btn-primaryred btn_fare" href="<?php echo $this->basePath(); ?>#topheader">Book</a> </th>
+                </tr>
+                <tr>
+                    <th align="center"><span  class="loc12e1" style="color:#000;">12 Hrs - 120 KM</span> </th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc12e2" style="color:#000;">2000 </span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc12e3" style="color:#000;"> 10</span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc12e4" style="color:#000;"> 100</span></th>
+                    <th align="center"><a onclick="booking_local();" id="" role="button" class="btn btn-primaryred btn_fare" href="<?php echo $this->basePath(); ?>#topheader">Book</a> </th>
+                </tr>
+                <tr> 
+                  <!-- <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>--> 
+                </tr>
+                <tr>
+                    <th rowspan="5"  width="10%"  height="30" align="center" valign="top" style="border:1px solid #ddd">Sedan <br>
+                        <img alt="" class="localimg" src="images/sedancar.png">
+
+                    </th>
+                <!--<th align="center">&nbsp;</th>
+          <th align="center">&nbsp;</th>
+          <th align="center">&nbsp;</th>
+          <th align="center">&nbsp;</th>
+          <th align="center">&nbsp;</th>--> 
+                </tr>
+                <tr>
+                    <th align="center"><span  class="loc4s1" style="color:#000;">4 Hrs - 40 KM</span> </th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc4s2" style="color:#000;">800 </span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc4s3" style="color:#000;"> 15</span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc4s4" style="color:#000;">100 </span></th>
+                    <th align="center"><a onclick="booking_local();" id="" role="button" class="btn btn-primaryred btn_fare" href="<?php echo $this->basePath(); ?>#topheader">Book</a> </th>
+                </tr>
+                <tr>
+                    <th align="center"><span  class="locs1" style="color:#000;">8 Hrs - 8 KM</span> </th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="locs2" style="color:#000;">1300 </span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="locs3" style="color:#000;">15 </span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="locs4" style="color:#000;">100 </span></th>
+                    <th align="center"><a onclick="booking_local();" id="" role="button" class="btn btn-primaryred btn_fare" href="<?php echo $this->basePath(); ?>#topheader">Book</a> </th>
+                </tr>
+                <tr>
+                    <th align="center"><span  class="loc12s1" style="color:#000;">12 Hrs - 120 KM</span> </th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc12s2" style="color:#000;">2400 </span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc12s3" style="color:#000;">15 </span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc12s4" style="color:#000;">100 </span></th>
+                    <th align="center"><a onclick="booking_local();" id="" role="button" class="btn btn-primaryred btn_fare" href="<?php echo $this->basePath(); ?>#topheader">Book</a> </th>
+                </tr>
+                <tr> 
+                  <!-- <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>--> 
+                </tr>
+                <tr>
+                    <th rowspan="5"  width="10%"  height="30" align="center" valign="top" style="border:1px solid #ddd">prime <br>
+
+                        <img alt="" class="localimg" src="images/primecar.png">
+
+                    </th>
+                  <!-- <th align="center">&nbsp;</th>
+            <th align="center">&nbsp;</th>
+            <th align="center">&nbsp;</th>
+            <th align="center">&nbsp;</th>
+            <th align="center">&nbsp;</th>--> 
+                </tr>
+                <tr>
+                    <th align="center"><span  class="loc4p1" style="color:#000;">4 Hrs - 40 KM</span> </th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc4p2" style="color:#000;"> 1000</span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc4p3" style="color:#000;"> 15</span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc4p4" style="color:#000;"> 120</span></th>
+                    <th align="center"><a onclick="booking_local();" id="" role="button" class="btn btn-primaryred btn_fare" href="<?php echo $this->basePath(); ?>#topheader">Book</a> </th>
+                </tr>
+                <tr>
+                    <th align="center"><span  class="locp1" style="color:#000;">8 Hrs - 80 KM</span> </th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="locp2" style="color:#000;">1800 </span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="locp3" style="color:#000;">15 </span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="locp4" style="color:#000;">120 </span></th>
+                    <th align="center"><a onclick="booking_local();" id="" role="button" class="btn btn-primaryred btn_fare" href="<?php echo $this->basePath(); ?>#topheader">Book</a> </th>
+                </tr>
+                <tr>
+                    <th align="center"><span  class="loc12p1" style="color:#000;">12 Hrs - 120 KM</span> </th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc12p2" style="color:#000;">2600 </span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc12p3" style="color:#000;">15 </span></th>
+                    <th align="center"><i class="fa fa-inr"></i> <span  class="loc12p4" style="color:#000;">120 </span></th>
+                    <th align="center"><a onclick="booking_local();" id="" role="button" class="btn btn-primaryred btn_fare" href="<?php echo $this->basePath(); ?>#topheader">Book</a> </th>
+                </tr>
+                <tr> 
+
+                </tr>
+
+                <!--Local new hire End--> 
+
+            </table>
+        </div>
+
+    </div>
+</section>
+
+<section id="partner">
+    <div class="container" style="margin-bottom:10px;">
+        <div class="center wow fadeInDown">
+            <h2>Hello42 Cabs</h2>
+            <p class="lead">Hello42 Cabs is a one-stop-shop for taxi booking services enabling the traveler to book safe and comfortable ride.<br />
+                It gives you a wide range of choices between chauffeur driven car rentals and radio taxis across India to suit your specific need whether it be an airport transfer, late night travel, Outstationed Business meeting, An Outstation road trip or a special car on a special occasion. <br /> It lays on the following pillars : 
+
+            </p>
+        </div>    
+
+    </div><!--/.container-->
+</section>
+
+
+
+
+
+<section id="conatcat-info">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="media contact-info wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="600ms">
+                    <div class="pull-left">
+                        <i class="fa fa-phone"></i>
+                    </div>
+                    <div class="media-body">
+                        <h2>Have a question or need a custom quote?</h2>
+                        <p>Our team is here to help 24 hours a day, 7 days a week. +91-11 424 242 42
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--/.container-->    
+</section>
+
+<!--/#bottom-->
+
+
+
+
+
+
+
+<script>
+
+    $(function() {
+        var sidebar = $('.topbar');
+        var top = sidebar.offset().top - parseFloat(sidebar.css('margin-top'));
+
+        $(window).scroll(function(event) {
+            var y = $(this).scrollTop();
+            if (y >= top) {
+                sidebar.addClass('fixed');
+            } else {
+                sidebar.removeClass('fixed');
+            }
+        });
+    });
+
+
+</script>
+<script type="text/javascript">
+    $('.clockpicker').clockpicker()
+            .find('input').change(function() {
+        console.log(this.value);
+    });
+    var input = $('#single-input').clockpicker({
+        placement: 'bottom',
+        align: 'left',
+        autoclose: true,
+        'default': 'now'
+    });
+
+// Manually toggle to the minutes view
+    $('#check-minutes').click(function(e) {
+        // Have to stop propagation here
+        e.stopPropagation();
+        input.clockpicker('show')
+                .clockpicker('toggleView', 'minutes');
+    });
+    if (/mobile/i.test(navigator.userAgent)) {
+        $('input').prop('readOnly', true);
+    }
+</script>
+
+<script>
+    $(document).ready(function() {
+
+        $("#outstation_from").validate({
+            rules: {
+                outstation_from: {
+                    required: true
+                }
+            },
+            messages: {
+                outstation_from: {
+                    required: "Please Select Source"
+                }
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+
+        $("#pickup_now").click(function() {
+            $("#datetime").hide();
+        });
+        $("#pickup_later").click(function() {
+            $("#datetime").show();
+        });
+        
+$('#multy_Outstation').find('input,select').attr('disabled', 'disabled');
+        $("#roundtrip").click(function() {
+            $("#round_trip").show();
+            $("#multy_Outstation").hide();
+            $("#roundtrip_Outstation").show();
+            $('#roundtrip_Outstation').find('input,select').attr('disabled', false);
+            $('#multy_Outstation').find('input,select').attr('disabled', 'disabled');
+            //$("#one_way").hide();
+        });
+        $("#oneway").click(function() {
+            $("#round_trip").hide();
+            $("#roundtrip_Outstation").show();
+            $("#multy_Outstation").hide();
+            $('#roundtrip_Outstation').find('input,select').attr('disabled', false);
+            $('#multy_Outstation').find('input,select').attr('disabled', 'disabled');
+            //$("#one_way").show();
+        });
+
+        $("#multicity").click(function() {
+            $("#roundtrip_Outstation").hide();
+            $("#round_trip").hide();
+            $("#multy_Outstation").show();
+            $('#roundtrip_Outstation').find('input,select').attr('disabled', 'disabled');
+            $('#multy_Outstation').find('input,select').attr('disabled', false);
+        });
+
+
+    });
+</script>
+
+<!-- City selection print sms start-->
+
+<div class="modal fade" id="myModalprintsmscancle" role="dialog">
+    <div class="modal-dialog modal-dialogprint">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">
+
+                    Print/SMS Booking
+
+                </h2>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding:0 15px;">
+
+                    <div class="col-sm-12 price-one ">
+
+                        <!-- <div class="col-lg-12" style=" background: #c52d2f none repeat scroll 0 0; color: #fff; padding:5px;">
+                          <h2>Package-
+                                               <span style="font-size:14px;">4 Hours - 40 KM</span>
+                                               </h2></div>-->
+
+                        <div class="col-lg-12" style="background:#EFEFEF;">
+                            <label class="col-lg-12 padding0" style="text-align:left; color:#000;"> Booking No.  </label> 
+                            <input class="form-control" placeholder="Ticket No." style="border:1px solid #333;">
+
+                            <label class="col-lg-12 padding0" style="color:#000;">
+                                Mobile No.
+                            </label>
+
+                            <input class="form-control" placeholder="Mobile No." style="border:1px solid #333;">
+
+
+                            <label class="col-lg-12" style="color:#000; text-align:right; margin-top:5px;">
+                                <a href="#topheader" class="btn btn-primary"  role="button" id="local" onclick="booking_local();">Submit</a>
+
+                            </label>
+
+                        </div>
+
+
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer" style=" padding-top:2px !important;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- City selection print sms ends--> 
+
+<div class="modal fade" id="myModalfeedbackss" role="dialog">
+    <div class="modal-dialog  modal-dialogfeedback">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">
+
+                    Feedback
+                </h2>
+                <!--Click to select if we Exceeded, Met or Did Not meet your Expectations-->
+            </div>
+
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('input[type="radio"]').click(function() {
+                        if ($(this).attr("value") == "website") {
+                            $(".box").not(".mobileaap").hide();
+                            $(".box").not(".callcenter").hide();
+                            $(".website").show();
+                        }
+                        if ($(this).attr("value") == "android") {
+                            $(".box").not(".website").hide();
+                            $(".box").not(".callcenter").hide();
+                            $(".mobileaap").show();
+                        }
+                        if ($(this).attr("value") == "callcenter") {
+                            $(".box").not(".website").hide();
+                            $(".box").not(".mobileaap").hide();
+                            $(".callcenter").show();
+                        }
+                    });
+                });
+            </script>
+
+            <style type="text/css">
+                .box{
+
+                    display: none;
+
+
+                }
+
+            </style>
+            <?=
+            $this->serverurl() . $this->url();
+            echo $_SERVER['PHP_SELF'];
+            ?>
+            <form id="feedbackform" method="post" autocomplete="off" action="<?php echo $this->basePath(); ?>/index/page/feedback"  onsubmit="return validfeedform(this.id);">
+                <div class="modal-body" style="height:500px; overflow:scroll;">
+                    <div class="row" style="padding:0 15px;">
+
+                        <div class="col-sm-12 plan price-one " style="background:#EFEFEF;">
+
+
+
+                            <div class="col-lg-12 feedback">
+
+                                <label class="col-sm-12" style="text-align:left;"> 
+                                    1. RESERVATION:- </label> 
+
+                                <div class="col-sm-3" >
+                                    Reservation is done through
+
+                                </div>
+
+                                <div class="col-sm-3" >
+                                    <input type="radio" name="resersvation" value="1"/> Website 
+
+                                </div>
+
+                                <div class="col-sm-3" >
+                                    <input type="radio" name="resersvation" value="2" /> Android Application
+
+                                </div>
+
+                                <div class="col-sm-3" >
+                                    <input type="radio" name="resersvation" value="3"/> Call Center
+
+                                </div>
+
+
+
+                            </div>
+
+                            <div class="box website" style="display:block;">
+                                <div class="col-lg-12 feedback">
+                                    <label class="col-sm-12" style="text-align:left;"> 
+                                        <strong> Website</strong>  </label> 
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the booking process 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="web_booking_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="web_booking_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="web_booking_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="web_booking_rate" />Very Good</label>
+
+                                    </div>
+
+
+
+
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the confirmation process
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="web_confirm_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="web_confirm_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="web_confirm_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="web_confirm_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            Rate the process on website 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="web_process_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="web_process_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="web_process_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="web_process_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            Over all how would you rate our services
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="web_service_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="web_service_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="web_service_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="web_service_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="box mobileaap">
+                                <div class="col-lg-12 feedback">
+                                    <label class="col-sm-12" style="text-align:left;"> 
+                                        <strong>Android Application</strong>  </label> 
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate our App  
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="And_app_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="And_app_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="And_app_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="And_app_rate" />Very Good</label>
+
+                                    </div>
+
+
+
+
+
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the booking process
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="And_book_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="And_book_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="And_book_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="And_book_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the confirmation process 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="And_confirm_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="And_confirm_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="And_confirm_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="And_confirm_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            Over all how would you rate our services
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="And_service_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="And_service_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="And_service_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="And_service_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="box callcenter">
+                                <div class="col-lg-12 feedback">
+                                    <label class="col-sm-12" style="text-align:left;"> 
+                                        <strong>Call Center </strong>  </label> 
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the booking process 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="Call_book_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="Call_book_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="Call_book_rate" /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="Call_book_rate" />Very Good</label>
+
+                                    </div>
+
+
+
+
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate  our agent  to answer your question
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="Call_agent_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="Call_agent_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="Call_agent_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="Call_agent_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate our  agent to follow your instructions 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="Call_instruc_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="Call_instruc_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="Call_instruc_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="Call_instruc_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the confirmation process 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="Call_confirmation_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="Call_confirmation_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="Call_confirmation_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="Call_confirmation_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            Over all how would you rate our services   
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="Call_services_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="Call_services_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="Call_services_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="Call_services_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="col-lg-12 feedback">
+
+                                <label class="col-sm-12" style="text-align:left;"> 
+                                    2. VEHICLES:- </label> 
+
+                            </div>
+
+                            <div class="">
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the reporting of vehicle 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="vehicle_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="vehicle_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="vehicle_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="vehicle_rate" />Very Good</label>
+
+                                    </div>
+
+
+
+
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate the vehicle as requested
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="requested_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="requested_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="requested_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="requested_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How was your special instructions followed 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="insfollow_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="insfollow_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="insfollow_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="insfollow_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How was the vehicle condition
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="condition_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="condition_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="condition_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="condition_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How was the Air-Conditioning effective
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="effective_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="effective_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="effective_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="effective_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How was the cleanness and tidy of vehicle 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="cleanness_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="cleanness_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="cleanness_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="cleanness_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How Was the uniform and grooming
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="grooming_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="grooming_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="grooming_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="grooming_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-12 feedback">
+
+                                <label class="col-sm-12" style="text-align:left;"> 
+                                    2. BILLING:- </label> 
+
+                            </div>
+
+                            <div class="">
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate  the billing accuracy 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="accuracy_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="accuracy_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="accuracy_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="accuracy_rate" />Very Good</label>
+
+                                    </div>
+
+
+
+
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How do you rate receiving  invoice on time
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="invoice_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="invoice_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="invoice_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="invoice_rate" />Very Good</label>
+
+                                    </div>
+
+
+
+                                </div>
+
+                                <div class="col-lg-12 feedback">
+
+                                    <div class="col-sm-5" >
+                                        <label class="col-sm-12">
+                                            How will you rate your receiving invoice 
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6" >
+                                        <label class="col-sm-3"><input type="radio" value="bad" name="receivingInv_rate" /> bad </label>
+                                        <label class="col-sm-3"><input type="radio" value="Average" name="receivingInv_rate" /> Average </label>
+                                        <label class="col-sm-3"> <input type="radio" value="Good" name="receivingInv_rate"  /> Good</label>
+                                        <label class="col-sm-3"> <input type="radio" value="Very Good" name="receivingInv_rate" />Very Good</label>
+
+                                    </div>
+
+
+                                </div>
+
+
+
+                            </div>
+
+
+
+                            <div class="col-sm-8">
+
+
+                            </div>
+
+                            <div class="col-sm-4">
+                                <label class="col-lg-12" style="color:#000; text-align:center;">
+                                    <!-- <a href="#topheader" class="btn btn-primary"  role="button" id="local" onclick="booking_local();">Submit</a> -->
+                                    <input type="submit" value="submit" name="submit" class="btn btn-primary">
+
+                                </label>
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+            <div class="modal-footer" style=" padding-top:2px !important;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

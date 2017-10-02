@@ -1,0 +1,1404 @@
+<section id="main_form" class="padding12top">
+   
+   		<div class="banner-bottom pcenter" > 
+  <!-- container -->
+  <div class="container">
+  <div class="col-sm-12 sige_small">
+  
+    <div class="choose">
+      <div class="destinations-grid-info tours">
+        <div class="td-grids">
+          <div class="col-md-31 sightmargin col_smal_modify" align="left">
+            <p>
+              <label><strong> From:</strong></label>
+              <br>
+              <label> <?php echo $data['term']; ?></label>
+            </p>
+          </div>
+          <div class="col-md-31 sightmargin col_smal_modify" align="left">
+            <p>
+              <label><strong> To:</strong></label>
+              <br>
+              <label> <?php echo $data['pointDropArea'];?></label>
+            </p>
+          </div>
+          <div class="col-md-31 sightmargin col_smal_modify" align="left">
+            <p>
+              <label><strong> Departure Date:</strong></label>
+              <br>
+              <label>
+                  <?php
+                  if($data['pickup']=='Book Later'){
+                      $date = explode(' ',$data['pointLaterDate'],2);
+                  }else{
+                      $date = array();
+                      $date[0]= date("d/m/Y");
+                      $date[1]= 'Within 30 minutes';
+                  }
+                  echo $date[0];
+                  ?> </label>
+              
+            </p>
+          </div>
+          <div class="col-md-31 sightmargin col_smal_modify" align="left">
+            <p>
+              <label><strong> Pickup Address:</strong></label>
+              <br>
+              <label> <?php echo $data['pointAddress']; ?></label>
+            </p>
+          </div>
+          <div class="col-md-31 sightmargin col_smal_modify" align="left">
+            <p>
+              <label><strong> Pickup Time:</strong></label>
+              <br>
+              <label> <?php echo $date[1];?></label>
+            </p>
+          </div>
+          <div class="col-md-31 sightmargin col_smal_modify" align="left">
+            <p>
+              <label><strong> Adults:</strong> <?php echo $data['pointAdults'];?></label>
+              <br>
+              <label> <strong> Children:</strong> <?php echo $data['pointChilds']; ?></label>
+            </p>
+          </div>
+          <div class="col-md-31 col-md-31car sightmargin col_smal_modify" align="left">
+            <p>
+              <label> <strong>Car Type:</strong></label>
+              <br>
+              <label> Sedan</label>
+            </p>
+          </div>
+          <div class="col-md-31 sightmargin col_smal_modify" align="left">
+            <p>
+              <input id="btnModify" class="modify_text" value="Modify Search (+)" onClick="javascript:togglemodify('1','btnBack');" type="button">
+            </p>
+          </div>
+          <div class="col-xs-2 td-right" style="width:100%;">
+            <div id="modify_search" style="width: 100%; border-radius: 5px; display:none ;"> 
+              
+              <!--Outstation Start-->
+              <!--<form id="outstationForm" name="outstationForm" method="post" action="#">-->
+                <div id="booking_outstation" class="portlet portlet-purple" style="border-width: 1px 0px 0px; border-style: solid none none; border-color: rgb(210, 210, 210) -moz-use-text-color -moz-use-text-color; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; margin: 0px; float:left;">
+                  <div id="inputSizing" class="panel-collapse in" style="height: auto;">
+                    <div class="portlet-body " style="padding:10px 15px 0;">
+                      <div id="popAlert" style="display:none;">
+                        <div class="row">
+                          <div class="col-sm-12" style="text-align:center;">
+                            <p style="border-bottom: 1px solid #ff3f3f; color:#ff3f3f">We can not confirm online booking as such short notice.<br>
+                              Please call (011)42424242 for immediate bookings and confirmations.</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!--================alert for same day============ --> 
+                      
+                      <!--================alert for same day============ -->
+                      
+                      <div class="row">
+                        <div class="form-group clearfix" style="margin:0;">
+                          <div class="col-sm-11" style="margin-left:10px;">
+                            <label class="radio-inline specs mytip" name="optionsInlineRadios" onclick="roundtrip()" value="1" checked="" style="margin-left:10px">
+                            <div class="radioWrap" id="point_to_point">
+                              <input name="optionsInlineRadios" onClick="roundtrip()" class="radiobtnalign" value="1" checked="checked" type="radio">
+                              <span></span></div>
+                            <span id="outstation_roundtrip">Point To Point</span>
+                            </label>
+                            <label class="radio-inline specs" style="padding-left:47px !important;">
+                            <div class="radioWrap" id="local_booking">
+                              <input name="optionsInlineRadios" onClick="oneway();" class="radiobtnalign" value="2" type="radio">
+                              <span></span></div>
+                            <span id="outstation_oneway">Local Booking</span>
+                            </label>
+                            <label class="radio-inline specs" style="padding-left:47px !important;">
+                            <div class="radioWrap" id="airport_transfer">
+                              <input id="selectMulticity" name="optionsInlineRadios" onClick="multicity();" class="radiobtnalign" value="3" type="radio">
+                              <span></span></div>
+                            <span id="outstation_multicity">Airport Transport</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!--multiple country-->
+                      <div> 
+                        
+                        <!--multiple country End-->
+                        <hr style="margin:5px auto 10px;">
+                        <div class="row clearfix" style="padding-bottom:10px; display: block" id="point-to-point">
+                            <?php
+                         
+          $form = $this->form;
+          //$form->setAttribute('action', $this->url('pointtopoint', array('action' => 'point')));
+          $form->prepare();
+          echo $this->form()->openTag($form);
+          ?>
+                          <div class="col-sm-12">
+                           
+                        <div class=" col-sm-2 margintop10">
+							I Want to Cab*
+						</div>
+                        
+                         <div class="col-sm-10 margintop10">
+							
+    <?php echo $this->FormElement($form->get('pointCabIn'));?>
+
+						</div>
+                        
+                        <div class="col-sm-2 margintop10">
+							Pickup Area
+						</div>
+                        
+                         <div class="col-sm-4 margintop10">
+							<?php echo $this->FormElement($form->get('term'));?>
+                                                        <?php echo $this->FormElement($form->get('pointPickupArea_value'));?>
+						</div>
+                        
+                         <div class="col-sm-2 margintop10">
+							Drop Area
+						</div>
+                        
+                         <div class="col-sm-4 margintop10">
+							<?php echo $this->FormElement($form->get('pointDropArea'));?>
+                                                     <?php echo $this->FormElement($form->get('pointDropArea_value'));?>
+						</div>
+                        
+                         <div class="col-sm-2 margintop10">
+							Pickup Address*
+						</div>
+                        
+                         <div class="col-sm-4 margintop10">
+							<?php echo $this->FormElement($form->get('pointAddress'));?>
+                                                    
+                                                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiFNtCEUrKPHbCUOdqVKMCsq9-uPB5sc4&libraries=places" async defer></script> 
+        <script>
+          
+            function initPTPMap() {
+                var options = {
+                componentRestrictions: {country: "in"},
+                //types: ['address']
+                };
+
+                var input = document.getElementById('pointAddress');
+                var autocomplete = new google.maps.places.Autocomplete(input,options);
+            }
+            
+            google.maps.event.addDomListener(window, 'load', initPTPMap);
+            </script>
+						</div>
+                        
+                        
+                         
+                         <div class="col-sm-2 margintop10">
+							Date & Time
+						</div>
+                        
+                         <div class="col-sm-4 padding_margin0">
+                         
+                         	<div class="col-sm-7 margintop10">
+							<?php echo $this->FormElement($form->get('pointLaterDate'));?>
+                            </div>
+                            
+                            <!--<div class="col-sm-4 pull-right margintop10" >
+							<input type="text" class="form-control" style="padding:0 5px;" value="11 PM">
+                            </div>-->
+						</div>
+                        
+                                                 
+                         	<div class="col-sm-1 margintop10">
+                            Adults*
+                            </div>
+                            <div class="col-sm-2 margintop10">
+							<?php echo $this->formElement($form->get('pointAdults'));?>
+                            </div>
+                            
+                            <div class="col-sm-1 margintop10" >
+                           Child
+                           </div>
+                            <div class="col-sm-2 margintop10">
+							<?php echo $this->formElement($form->get('pointChilds'));?>
+                            </div>
+						
+                        
+                        
+                       
+                         
+                         	<div class="col-sm-1 margintop10">
+                           Luggages
+                           </div>
+                           <div class="col-sm-2 margintop10">
+				<?php echo $this->FormElement($form->get('pointLuggages'));?></div>
+                            
+                            <div class="col-sm-1 margintop10" style="padding-right:0;">
+                            No of Cars
+                            </div>
+                            <div class="col-sm-2 margintop10">
+			<?php echo $this->FormElement($form->get('pointCars'));?></div>
+						
+                        
+                        
+                         
+                         <div class="col-sm-3 margintop10">
+							<?php echo $this->FormElement($form->get('submit'));?>
+                                
+                            <?php echo $this->form()->closeTag(); ?>
+						</div>                        
+                         
+                            
+</div>
+                        </div>
+                        
+                        <div class="row clearfix" style="padding-bottom:10px; display: none" id="local-booking">
+                          <div class="col-sm-12">
+                           
+                        <div class=" col-sm-2 margintop10">
+							I Want to Cab in*
+						</div>
+                        
+                         <div class="col-sm-4 margintop10">
+							
+    <select class="">
+        <option>New Delhi</option>
+        <option>Noida</option>
+        
+    </select>
+
+						</div>
+                        
+                        
+                          <div class=" col-sm-2 margintop10">
+							I want a Cab for
+						</div>
+                        
+                         <div class="col-sm-4 margintop10">
+							
+    <select class="">
+        <option>4 Hrs - 40 KM</option>
+        <option>Noida</option>
+        
+    </select>
+
+						</div>
+                        
+                        <div class="col-sm-2 margintop10">
+							Pickup Location
+						</div>
+                        
+                         <div class="col-sm-4 margintop10">
+							<input type="text" class="form-control" value="Karol Bagh">
+						</div>
+                        
+                         <div class="col-sm-2 margintop10">
+							
+							Pickup Address*
+
+						</div>
+                        
+                         <div class="col-sm-4 margintop10">
+							<input type="text" class="form-control" value="29-30, DB GUPTA MARKET KAROL BAGH">
+						</div>
+                        
+                         <div class="col-sm-12 padding_margin0">
+                         <div class="col-sm-2 margintop10">
+							Date & Time
+						</div>
+                        
+                         <div class="col-sm-4 padding_margin0">
+                         
+                         	<div class="col-sm-7 margintop10">
+							<input type="text" class="form-control" value="13-05-2017">
+                            </div>
+                            
+                            <div class="col-sm-4 pull-right margintop10" >
+							<input type="text" class="form-control" style="padding:0 5px;" value="11 PM">
+                            </div>
+						</div>
+                        
+                        </div>
+                                           
+                         	<div class="col-sm-1 margintop10">
+                            Adults*
+                            </div>
+                            <div class="col-sm-2 margintop10">
+							<input type="text" class="form-control" value="2">
+                            </div>
+                            
+                            <div class="col-sm-1 margintop10" >
+                           Child
+                           </div>
+                            <div class="col-sm-2 margintop10">
+							<input type="text" class="form-control" style="padding:0 5px;" value="1">
+                            </div>
+						
+                        
+                        
+                       
+                         
+                         	<div class="col-sm-1 margintop10">
+                           Luggages
+                           </div>
+                           <div class="col-sm-2 margintop10">
+							<input type="text" class="form-control" value="2">
+                            </div>
+                            
+                            <div class="col-sm-1 margintop10" style="padding-right:0;">
+                            No of Cars
+                            </div>
+                            <div class="col-sm-2 margintop10">
+							<input type="text" class="form-control" style="padding:0 5px;" value="1">
+                            </div>
+						
+                        
+                        
+                         
+                         <div class="col-sm-3 margintop10">
+							<a href="#" class="btn btn-lg col-sm-12 modify_search_but">Search</a>
+						</div>
+                        
+                         
+                        
+                        
+                         
+                         
+                        
+                         
+                        
+                            
+</div>
+                        </div>
+                        
+                        
+                        <div class="row clearfix" style="padding-bottom:10px; display: none" id="ariport-transfer">
+                          <div class="col-sm-12">
+                           
+                        <div class=" col-sm-2 margintop10">
+							Flight / Train No.
+						</div>
+                        
+                         <div class="col-sm-4 margintop10">
+							
+   <input type="text" class="form-control" value="AirI102">
+
+						</div>
+                        
+                        
+                          <div class=" col-sm-2 margintop10">
+							Airport / Train
+						</div>
+                        
+                         <div class="col-sm-4 margintop10" style="height:32px;">
+							
+    <select class="">
+        <option>It Airport-Delhi</option>
+       
+    </select>
+
+						</div>
+                        
+                        <div class="col-sm-2 margintop10">
+							Pickup Location
+						</div>
+                        
+                         <div class="col-sm-4 margintop10">
+							<input type="text" class="form-control" value="Karol Bagh">
+						</div>
+                        
+                         <div class="col-sm-2 margintop10">
+							
+							Landmark
+
+						</div>
+                        
+                         <div class="col-sm-4 margintop10">
+							<input type="text" class="form-control" value="29-30, DB GUPTA MARKET KAROL BAGH">
+						</div>
+                        
+                         
+                         <div class="col-sm-2 margintop10">
+							
+							Pickup Address*
+
+						</div>
+                        
+                         <div class="col-sm-4 margintop10">
+							<input type="text" class="form-control" value="29-30, DB GUPTA MARKET KAROL BAGH">
+						</div>
+                        
+                         
+                         <div class="col-sm-2 margintop10">
+							Date & Time
+						</div>
+                        
+                         <div class="col-sm-4 padding_margin0">
+                         
+                         	<div class="col-sm-7 margintop10">
+							<input type="text" class="form-control" value="13-05-2017">
+                            </div>
+                            
+                            <div class="col-sm-4 pull-right margintop10" >
+							<input type="text" class="form-control" style="padding:0 5px;" value="11 PM">
+                            </div>
+						</div>
+                        
+                      
+                                           
+                         	<div class="col-sm-1 margintop10">
+                            Adults*
+                            </div>
+                            <div class="col-sm-2 margintop10">
+							<input type="text" class="form-control" value="2">
+                            </div>
+                            
+                            <div class="col-sm-1 margintop10" >
+                           Child
+                           </div>
+                            <div class="col-sm-2 margintop10">
+							<input type="text" class="form-control" style="padding:0 5px;" value="1">
+                            </div>
+						
+                        
+                        
+                       
+                         
+                         	<div class="col-sm-1 margintop10">
+                           Luggages
+                           </div>
+                           <div class="col-sm-2 margintop10">
+							<input type="text" class="form-control" value="2">
+                            </div>
+                            
+                            <div class="col-sm-1 margintop10" style="padding-right:0;">
+                            No of Cars
+                            </div>
+                            <div class="col-sm-2 margintop10">
+							<input type="text" class="form-control" style="padding:0 5px;" value="1">
+                            </div>
+						
+                        
+                        
+                         
+                         <div class="col-sm-3 margintop10">
+							<a href="#" class="btn btn-lg col-sm-12 modify_search_but">Search</a>
+						</div>
+                        
+                         
+                        
+                        
+                         
+                         
+                        
+                         
+                        
+                            
+</div>
+                        </div>
+                        
+                      </div>
+                      
+                     
+                      <div style="display: none;" id="addCityForm"></div>
+                      <!--add div form--> 
+                      
+                   
+                      
+                    </div>
+                  </div>
+                </div>
+              <!--</form>-->
+              <!--Outstation End--> 
+              
+            </div>
+          </div>
+          <div class="clearfix"> </div>
+        </div>
+      </div>
+    </div>
+    
+    </div>
+    
+    <div class="banner-bottom-grids">
+    	<div class="col-md-3 banner-bottom-grid widthpercent20" style="float:left;">
+                
+                <div class="top-destinations-grids" style="margin-top:0;">
+						
+						<div class="top-destinations-bottom padding_margin0">
+							<div class="td-grids">
+                            
+                            
+                            <div class="summary">
+                                                    
+                            <div class="left-div-form" style="border-bottom:1px solid #333;">
+							<h4>Modify Search</h4>
+						</div>
+                        
+                        <div class="left-div-form">
+							I Want to Cab*
+						</div>
+                        
+                         <div class="left-div-form">
+							
+    <select class="">
+        <option>New Delhi</option>
+        <option>Noida</option>
+        
+    </select>
+
+						</div>
+                        
+                        <div class="left-div-form">
+							Pickup Area
+						</div>
+                        
+                         <div class="left-div-form">
+							<input type="text" class="form-control" value="Karol Bagh">
+						</div>
+                        
+                         <div class="left-div-form">
+							Drop Area
+						</div>
+                        
+                         <div class="left-div-form">
+							<input type="text" class="form-control" value="Noida">
+						</div>
+                        
+                         <div class="left-div-form">
+							Pickup Address*
+						</div>
+                        
+                         <div class="left-div-form">
+							<input type="text" class="form-control" value="29, DB Gupta Market, Karol Bagh">
+						</div>
+                        
+                        
+                         
+                         <div class="left-div-form">
+							Date & Time
+						</div>
+                        
+                         <div class="left-div-form">
+                         
+                         	<div class="col-sm-7 padding_margin0 col_smal_modify">
+							<input type="text" class="form-control" value="13-05-2017">
+                            </div>
+                            
+                            <div class="col-sm-4 pull-right padding_margin0 col_smal_modify" >
+							<input type="text" class="form-control" style="padding:0 5px;" value="11 PM">
+                            </div>
+						</div>
+                        
+                        
+                        <div class="left-div-form">
+                         
+                         	<div class="col-sm-6 padding_margin0 col_smal_modify">
+                            Adults*
+							<input type="text" class="form-control" value="2">
+                            </div>
+                            
+                            <div class="col-sm-6 pull-right  col_smal_modify" style="padding-right:0; padding-left:5px;" >
+                           Child
+							<input type="text" class="form-control" style="padding:0 5px;" value="1">
+                            </div>
+						</div>
+                        
+                        
+                        <div class="left-div-form">
+                         
+                         	<div class="col-sm-6 col_smal_modify padding_margin0">
+                           Luggages
+							<input type="text" class="form-control" value="2">
+                            </div>
+                            
+                            <div class="col-sm-6 pull-right col_smal_modify  " style="padding-right:0; padding-left:5px;" >
+                            No of Cars
+							<input type="text" class="form-control" style="padding:0 5px;" value="1">
+                            </div>
+						</div>
+                        
+                        
+                         
+                         <div class="left-div-form">
+							<a href="#" class="btn btn-lg col-sm-12 modify_search_but">Search</a>
+						</div>
+                         
+</div>
+								<div class="clearfix"> </div>
+							</div>
+							
+						</div>
+					</div>
+					
+					
+				</div>
+    
+    
+      <div class="col-md-6 banner-bottom-grid widthpercent60 padding_margin0">
+        <div class="destinations-grid-info " style="background:none !important; padding-left:0 !important; padding-right:0 !important;">
+          <div class="mapcantiner_inner1" style="padding:0 !important;">
+            <div class="" style="margin:0 0 10px; padding:0 0 10px;">
+              <div class="col-md-31 sightmargin overviueimg5" align="left" style="padding-left:0 !important;">
+                <h4>Point to Point Car</h4>
+              </div>
+              
+              <div class="col-md-31 sightmargin overviueimg5 pull-right" align="left">
+                <select class="input-sm pull-right hidden-xs currency_selection ng-pristine ng-valid form-control" ng-change="currencyChanged(selectedCurrency)" ng-options="currency.name for currency in availableCurrencies" ng-model="selectedCurrency" name="currency_selection">
+                  <option value="0">US Dollar (USD)</option>
+                  <option value="1">Indian Rupee (INR)</option>
+                  <option value="2">Algerian Dinar (DZD)</option>
+                  <option value="3">Argentine Peso (ARS)</option>
+                  <option value="4">Australian Dollar (AUD)</option>
+                  <option value="5">Bahraini Dinar (BHD)</option>
+                  <option value="6">Bangladeshi Taka (BDT)</option>
+                  <option value="7">Bolivian Boliviano (BOB)</option>
+                  <option value="8">Botswanan Pula (BWP)</option>
+                  <option value="9">Brazilian Real (BRL)</option>
+                  <option value="10">British Pound Sterling (GBP)</option>
+                  <option value="11">Brunei Dollar (BND)</option>
+                  <option value="12">Bulgarian Lev (BGN)</option>
+                  <option value="13">Cayman Islands Dollar (KYD)</option>
+                  <option value="14">Chinese Yuan Renminbi (CNY)</option>
+                  <option value="15">Colombian Peso (COP)</option>
+                  <option value="16">Costa Rican Colon (CRC)</option>
+                  <option value="17">Croatian Kuna (HRK)</option>
+                  <option value="18">Danish Krone (DKK)</option>
+                  <option value="19">Dominican Peso (DOP)</option>
+                  <option value="20">Egyptian Pound (EGP)</option>
+                  <option value="21">Estonian Kroon (EEK)</option>
+                  <option value="22">Euro (EUR)</option>
+                  <option value="23">Fijian Dollar (FJD)</option>
+                  <option value="24">Honduran Lempira (HNL)</option>
+                  <option value="25">Hong Kong Dollar (HKD)</option>
+                  <option value="26">Hungarian Forint (HUF)</option>
+                  <option value="27">Indonesian Rupiah (IDR)</option>
+                  <option value="28">Israeli New Sheqel (ILS)</option>
+                  <option value="29">Jamaican Dollar (JMD)</option>
+                  <option value="30">Japanese Yen (JPY)</option>
+                  <option value="31">Jordanian Dinar (JOD)</option>
+                  <option value="32">Kazakhstan Tenge (KZT)</option>
+                  <option value="33">Kuwaiti Dinar (KWD)</option>
+                  <option value="34">Macedonian Denar (MKD)</option>
+                  <option value="35">Malaysian Ringgit (MYR)</option>
+                  <option value="36">Maldivian Rufiyaa (MVR)</option>
+                  <option value="37">Mauritian Rupee (MUR)</option>
+                  <option value="38">Mexican Peso (MXN)</option>
+                  <option value="39">Moldovan Leu (MDL)</option>
+                  <option value="40">Moroccan Dirham (MAD)</option>
+                  <option value="41">Nepalese Rupee (NPR)</option>
+                  <option value="42">Netherlands Antillean Guilder (ANG)</option>
+                  <option value="43">New Taiwan Dollar (TWD)</option>
+                  <option value="44">New Zealand Dollar (NZD)</option>
+                  <option value="45">Omani Rial (OMR)</option>
+                  <option value="46">Pakistani Rupee (PKR)</option>
+                  <option value="47">Papua New Guinean Kina (PGK)</option>
+                  <option value="48">Paraguayan Guarani (PYG)</option>
+                  <option value="49">Philippine Peso (PHP)</option>
+                  <option value="50">Polish Zloty (PLN)</option>
+                  <option value="51">Qatari Rial (QAR)</option>
+                  <option value="52">Romanian Leu (RON)</option>
+                  <option value="53">Russian Ruble (RUB)</option>
+                  <option value="54">Salvadoran Colon (SVC)</option>
+                  <option value="55">Saudi Riyal (SAR)</option>
+                  <option value="56">Serbian Dinar (RSD)</option>
+                  <option value="57">Seychellois Rupee (SCR)</option>
+                  <option value="58">Sierra Leonean Leone (SLL)</option>
+                  <option value="59">Singapore Dollar (SGD)</option>
+                  <option value="60">Slovak Koruna (SKK)</option>
+                  <option value="61">South African Rand (ZAR)</option>
+                  <option value="62">South Korean Won (KRW)</option>
+                  <option value="63">Sri Lanka Rupee (LKR)</option>
+                  <option value="64">Swiss Franc (CHF)</option>
+                  <option value="65">Tanzanian Shilling (TZS)</option>
+                  <option value="66">Thai Baht (THB)</option>
+                  <option value="67">Trinidad and Tobago Dollar (TTD)</option>
+                  <option value="68">Tunisian Dinar (TND)</option>
+                  <option value="69">Turkish Lira (TRY)</option>
+                  <option value="70">Ugandan Shilling (UGX)</option>
+                  <option value="71">Ukrainian Hryvnia (UAH)</option>
+                  <option value="72">United Arab Emirates Dirham (AED)</option>
+                  <option value="73">Uzbekistan Som (UZS)</option>
+                  <option value="74">Venezuelan Bolìvar Fuerte (VEF)</option>
+                  <option value="75">Vietnamese Dong (VND)</option>
+                  <option value="76">Yemeni Rial (YER)</option>
+                  <option value="77">Zambian Kwacha (ZMK)</option>
+                </select>
+              </div>
+                            
+            </div>
+          </div>
+        </div>
+        <div>
+        
+        <div class="destinations-grid-info tours tours1" style="margin-bottom:10px !important;">
+          <div class="mapcantiner_inner1" style="padding:0 !important;">
+            <div class="" style="margin:0 0 10px; padding:0 0 10px;">
+              <div class="col-md-2 sightmargin overviueimgcar" align="left"> Car Type </div>
+              <div class="col-md-2 sightmargin overviueimg2car" align="left"> </div>
+              <div class="col-md-2 sightmargin overviueimg2car1" align="left" > <span class="vehicle_name">Departure</span><br>
+              </div>
+               <div class="col-md-2 sightmargin overviueimg2" align="left"> <span class="vehicle_name">Arrival</span><br>
+              </div>
+              
+              <div class="col-md-2 sightmargin overviueimg2car1 padding_margin0" align="left" > <span class="vehicle_name">Duration & Price</span><br>
+              </div>
+             
+                           
+            </div>
+          </div>
+          
+          </div>
+          <div class="clearfix"> </div>
+        </div>
+        
+        <!--    ACCORDIAN START-->
+        
+        <?php
+        
+        /** Calculate time and Distance by Mohd Emadullah **/
+        
+        $from = $data['term'];
+        $to = $data['pointDropArea'];
+        $from = urlencode($from);
+        $to = urlencode($to);
+        $gData = file_get_contents("http://maps.googleapis.com/maps/api/distancematrix/json?origins=$from&destinations=$to&language=en-EN&sensor=false");
+        $gData = json_decode($gData);
+        $time = 0;
+        $distance = 0;
+        foreach($gData->rows[0]->elements as $road) {
+            $time += $road->duration->value;
+            $distance += $road->distance->text;
+        }
+        
+        // extract hours
+        $hours = floor($time / (60 * 60));
+        
+        // extract minutes
+        $divisor_for_minutes = $time % (60 * 60);
+        $minutes = floor($divisor_for_minutes / 60);
+        
+        //echo $data['pointLaterDate'];
+        //echo $start = date("d/m/Y H:is", strtotime($data['pointLaterDate']));
+        
+        
+        
+        //$depTime = date('d/m/Y h:iA',strtotime("+$hours hour +$minutes minutes",strtotime(date("H:i",strtotime($data['pointLaterDate'])))));
+                
+        //$depTime = date("d/m/Y h:iA", strtotime($start . " +$hours hours +$minutes minutes"));
+        
+        $depTime = date('d/m/Y h:iA', strtotime(" +$hours hours +$minutes minutes", strtotime($data['pointLaterDate'])));
+        $arivalTime = date('d/m/Y h:iA', strtotime(" +0 hours +0 minutes", strtotime($data['pointLaterDate'])));
+               
+        $pickupTimeArray = explode(' ',$data['pointLaterDate']);
+           
+        $pickupDate = date("Y-m-d", strtotime($pickupTimeArray[0]));
+        
+        //24 hour formate
+        $pickupTime = date("H:i", strtotime($pickupTimeArray[1]));
+        
+        $data['pickupTime'] = $pickupTime;
+        $data['pickupDate'] = $pickupDate; 
+                
+        foreach($cabType as $val)
+        {  
+            $booking_type_id = 102;// for Point to Point
+            $fare =  $baseFareTable->pointBookingCabList($data['pointCabIn'], $booking_type_id, $val['cab_type_id'],$distance, $pickupTime);
+            $totalTaxPercent = $fare['basic_tax'] + $fare['krishikalyan_tax'] + $fare['swachhbharat_tax'];
+            
+            
+            ?>
+        
+        
+        <div id="accordion" class="panel-group">
+          <div class="panel panel-default">
+            <div>
+              <h4 class="panel-title">
+                <div style="margin-top:20px;" >
+                  <div style="padding:0 !important;" class="mapcantiner_inner1">
+                    <div style="margin:0 0 0; padding:0 0 0;" class="testimonial_box">
+                      <div align="center" class="col-md-2 sightmargin overviueimgcar"> <span class="image_box padding_margin0"> <?php if(!empty($val['cab_image'])){ ?><img src="/images/<?php echo $val['cab_image'] ?>"><?php } else{ ?><img src="/images/vehicle.png"><?php } ?></span> <br>
+                       <p style="font-size:12px;"> <?php echo $val['cab_type'] ;?> </p></div>
+                      <div align="left" class="col-md-2 sightmargin padding_margin0">
+                        <div class="amenities">
+                          <ul>
+                            <li style="float:left; line-height:13px;  padding: 0 0 0 5px; text-align:center;"><i class="icon_pertion"></i><br>
+                              <br>
+                              <?php echo $val['cab_capacity'] ;?></li>
+                            <li style="float:left; line-height:13px;  padding: 0 0 0 5px; text-align:center;"><i class="icon_lagguge"></i><br>
+                              <br>
+                              <?php echo $val['luggage_capacity'] ;?></li>
+                            <li style="float:left; line-height:13px;  padding: 0 0 0 5px; text-align:center;"><i class="icon_ac"></i><br>
+                              <br>
+                              <?php echo $val['ac_non_ac'] ;?></li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div align="left" class="col-md-31 sightmargin overviueimg2car1"> <span class="vehicle_name"><?php echo $data['term'];?></span><br>
+                        <span class="vehicle_name"><?php echo $arivalTime;//echo $data['pointLaterDate'];?></span> </div>
+                        
+                        <div align="left" class="col-md-31 sightmargin overviueimg2"> <span class="vehicle_name"><?php echo $data['pointDropArea'] ; ?></span><br>
+                        <span class="vehicle_name"><?php echo $depTime ;?></span> </div>
+                        
+                      <div align="left" style="line-height:" class="col-md-2 sightmargin padding_margin0"> <span class="vehicle_name"><?php echo $hours ?>h <?php echo $minutes ;?>m | <?php echo $distance; ?> KM</span><br>
+                      <div style="float:left" class="vehicle_name"  >&#x20b9;<?php echo $fare['total_bill'];?> </div><br>
+                      <div id="item_3" class="item" style="float:left; cursor:pointer;">
+       Fare Details
+        <div class="tooltip_description" style="display:none;" title="Item Description">
+          <table width="90%" align="center" cellspacing="5" cellpadding="5" style="color:#fff; ">
+          	<tr>
+            	<td>Base Fare</td>
+                <td align="right">Rs <?php echo $fare['minimum_charge'];?></td>
+            </tr>
+            <tr>
+            	<td>Per KM Price</td>
+                <td align="right">Rs <?php echo $fare['per_km_charge']; ?></td>
+            </tr>
+            
+             <tr>
+            	<td>Distance</td>
+                <td align="right"><?php echo $distance; ?> KM</td>
+            </tr>
+            
+            <?php
+            if(!empty($fare['extra_charge']))
+            {
+                ?>
+            <tr>
+            	<td>Night Charge </td>
+                <td align="right">Rs <?php echo $fare['extra_charge']; ?></td>
+            </tr>
+            
+            <?php
+                                
+            } 
+            ?>
+            <?php
+            if(!empty($fare['night_charge']))
+            {
+                ?>
+            <tr>
+            	<td>Night Charge </td>
+                <td align="right">Rs <?php echo $fare['night_charge']; ?></td>
+            </tr>
+            
+            <?php
+                                
+            } 
+            ?>
+            
+            
+            <tr>
+            	<td>Tax (<?php echo $totalTaxPercent ;?>%)</td>
+                <td align="right">Rs <?php echo $fare['total_tax']; ?></td>
+            </tr>
+            
+            
+            <tr>
+            	<td>Total Fare</td>
+                <td align="right">Rs <?php echo $fare['total_bill'];?></td>
+            </tr>
+                        
+          </table>
+        </div>
+      </div>
+                      </div>
+                            
+                    
+                     <div align="left" class="col-md-31 sightmargin overviueimg2"> 
+                      
+                                             
+                      
+                        <input type="hidden" value="11500" name="MinimumCharge">
+                     	
+                        </div>
+                        
+                      <script type="text/javascript">
+                          var obj = JSON.parse('<?php echo json_encode($data);?>');
+                      </script>
+                      <div class="col-sm-2 padding_margin0 margintop10" align="center">
+            	<span href="#" class="btn btn-lg car_select_but">
+                <input <?php if($val['cab_type_id']==2){ echo 'checked=checked';} ?> type="radio" id="selectId<?php echo $val['id'] ;?>" name="select_car" onclick="getPaymentDetail('<?php echo $fare['minimum_charge'];?>','<?php echo $fare['total_bill'];?>','<?php echo $fare['total_tax'];?>','<?php echo $totalTaxPercent;?>', '<?php echo $val['cab_type_id'];?>','<?php echo $distance;?>', obj)"  style="height:10px; width:10px;">
+                
+                Select</span>
+            </div>
+                      
+                    </div>
+                     <div class="clearfix"> </div>
+                    <div  style="margin-bottom:10px !important; background:none !important; border:none !important; padding:0;">
+          <div class="mapcantiner_inner1" style="padding:0 !important;">
+            <div class="" style="margin:0 0 10px; padding:0 0 10px;">
+              <div class="col-md-3 sightmargin overviueimg2car1 icon_fair" align="left"> <a href="#" class="cartypelink vehicle_name" data-toggle="modal" data-target="#myModal" style="width:120px;">Fair Rules</a> </div>
+              <div class="col-md-3 sightmargin overviueimg2car1 icon_bagage" align="left"> <a href="#" class="cartypelink vehicle_name" data-toggle="modal" data-target="#myBaggage<?php echo $val['id'] ?>">Baggage</a> </div>
+              <div class="col-md-3 sightmargin overviueimg2car1 icon_seating" align="left"> <a href="#" class="cartypelink vehicle_name" data-toggle="modal" data-target="#mySeatingCapacity<?php echo $val['id'] ?>" style="width:132px;">Seating Capacity</a> </div>
+              <div class="col-md-3 sightmargin overviueimg2car1 icon_amenities" align="left"> <a href="#" class="cartypelink vehicle_name" data-toggle="modal" data-target="#myModal">Aminities</a> </div>
+                                          
+            </div>
+          </div>
+          <div class="clearfix"> </div>
+        </div>
+                  </div>
+                  
+                 
+                  
+                </div>
+              </h4>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Popup start here ---->
+        <div id="myBaggage<?php echo $val['id'] ?>" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="max-width:500px;">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Baggage Capacity</h4>
+      </div>
+      <div class="modal-body" style="height:120px;">
+       <div class="">
+ 
+  <div class="">
+    <div id="home" class="tab-pane fade in active">
+    
+    <div style="width:50%; float:left;">
+    
+      <p><ul style="list-style:circle; margin-left:10px;">
+      	<li>Maximum # of Baggage : <?php echo $val['luggage_capacity'] ;?> </li>
+        
+        
+      </ul></p>
+    </div>
+           
+    </div>
+    
+  </div>
+</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+        
+        
+        <div id="mySeatingCapacity<?php echo $val['id'] ?>" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="max-width:500px;">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Seating Capacity</h4>
+      </div>
+      <div class="modal-body" style="height:120px;">
+       <div class="">
+ 
+  <div class="">
+    <div id="home" class="tab-pane fade in active">
+    
+    <div style="width:50%; float:left;">
+    
+      <p><ul style="list-style:circle; margin-left:10px;">
+      	<li>Driver : 1 </li>
+        <li>#Passenger :<?php echo $val['cab_capacity']-1 ;?>  </li>
+        <li>Total Person : <?php echo $val['cab_capacity'] ;?> </li>
+                
+      </ul></p>
+    </div>
+           
+    </div>
+    
+  </div>
+</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+                
+        <!-- Popup end here ------>
+        <?php
+        }
+        ?>
+        
+        <?php
+        use Zend\Session\Container;
+        $user_session = new Container('User');
+        if(empty($user_session->username))
+        {
+            $display = 'none';
+            
+        }else{
+            $display = 'block';
+        }
+        ?>
+        
+        <!--ACCORDIAN END-->
+        <form name="pointbookform" id="pointbookform">
+        <div id="accordion_travler" class="panel-group" style="display:<?php echo $display ;?>;">
+          <div class="panel panel-default">
+            <div>
+              <h4 class="panel-title">
+                <div style="margin-top:20px;" >
+                  <div style="padding:0 !important;" class="mapcantiner_inner1">
+                    <div style="margin:0 0 0; padding:0 0 0;" class="testimonial_box">
+                      <div align="center" class="col-md-3 sightmargin overviueimgcar">
+                          <input type="text" class="form-control" placeholder="First Name" name="gfName" id="gfName">
+                       </div>
+                      <div align="left" class="col-md-3 sightmargin">
+                        <input type="text" class="form-control" placeholder="Last Name" name="glName" id="glName">
+                      </div>
+                      <div align="left" class="col-md-3 sightmargin"> 
+                      
+                       <input type="text" class="form-control" placeholder="Email ID" name="gEmailId" id="gEmailId">
+                      </div>
+                      
+                      <div align="left" class="col-md-3 sightmargin"> 
+                      
+                       <input type="text" class="form-control" placeholder="Mobile No" name="gMobileNo" id="gMobileNo">
+                      </div>
+                        
+                        <div align="left" class="col-md-3 sightmargin">
+                            <select fclass="form-control" name="gNationality" id="gNationality">
+                                <option value="Indian">Indian</option>
+                                <option value="Non-Indian">Non-Indian</option>
+                            </select>
+                      
+                       <!--<input type="text" class="form-control" placeholder="Nationality" name="gNationality" id="gNationality">-->
+                      </div>
+                        <div align="left" class="col-md-3 sightmargin"> 
+                      
+                       <input type="text" class="form-control" placeholder="Alternate Mobile No" name="gAltMobileNo" id="gAltMobileNo">
+                      </div>
+                        
+                        
+                        
+                        <div align="left" class="col-md-6 sightmargin">
+                        <span class="vehicle_name"><input type="radio" name="gender" value="Male"></span>
+                        <span class="vehicle_name">Male</span>
+                        
+                        <span class="vehicle_name"><input type="radio" name="gender" value="Female"></span>
+                        <span class="vehicle_name">Female</span>
+                         </div>
+                        
+                      <div align="left" style="line-height:" class="col-md-12 sightmargin "> <span class="vehicle_name"><input type="checkbox" name="gst" id="gst"></span> I have a GST number(optional) 
+                      
+                     
+                      </div>
+                      
+                    
+                    <div id="gst_no" style="display:none;">
+                     <div align="left" class="col-md-4 sightmargin ">  
+                      <input type="text" name="gstRegNo" id="gstRegNo" class="form-control" placeholder="Registration Number">
+                     
+                      </div>
+                      
+                      <div align="left" class="col-md-4 sightmargin ">  
+                      <input type="text" name="gstRegCompanyName" id="gstRegCompanyName" class="form-control" placeholder="Registered Company Name">
+                     
+                      </div>
+					</div>
+                    </div>
+                     <div class="clearfix"> </div>
+                    <div  style="margin-bottom:10px !important; background:none !important; border:none !important; padding-top:10px;">
+          <div class="mapcantiner_inner1" style="padding:0 !important;">
+            <div class="" style="margin:0 0 10px; padding:0 0 10px;">
+              
+                <div class="col-md-2 sightmargin" align="left"> <a href="#" class="btn car_select_but">Pay Now </a> </div>
+              
+              <div class="col-md-1 sightmargin" align="center"> OR </div>
+              
+              <div class="col-md-2 sightmargin" align="left"> <a href="javascript:PointBookCab();" class="btn car_select_but" id="payLater" >Pay Later</a> </div>
+                                         				              
+            </div>
+          </div>
+          <div class="clearfix"> </div>
+        </div>
+                  </div>
+                                 
+                  
+                </div>
+              </h4>
+            </div>
+          </div>
+        </div>
+        
+        <!--ACCORDIAN END-->            
+          
+        
+      </div>
+        <div id="right-sidebar">
+      <?php echo $this->partial('right-payment.phtml', array('vr' => 'zf2'));?>
+      </div>
+      <div class="clearfix"> </div>
+    </div>
+  </form>
+  </div>
+</div>
+                      
+                        
+     </section>           
+ 
+    
+ <!--/#theam-->
+ 
+    
+   <section id="conatcat-info">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="media contact-info wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="600ms">
+                        <div class="pull-left">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="media-body">
+                            <h2>Have a question or need a custom quote?</h2>
+                            <p>Our team is here to help 24 hours a day, 7 days a week. +91-11 424 242 42
+
+</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!--/.container-->    
+    </section>
+ 
+ 
+ <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="max-width:500px;">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Benefits of logging in</h4>
+      </div>
+      <div class="modal-body" style="height:120px;">
+       <div class="">
+ 
+  <div class="">
+    <div id="home" class="tab-pane fade in active">
+    
+    <div style="width:50%; float:left;">
+    
+      <p><ul style="list-style:circle; margin-left:10px;">
+      	<li>Faster Bookings </li>
+        <li>Track Travel History </li>
+        <li>Manage Your Profile </li>
+        <li>Deal Alerts </li><br>
+      </ul></p>
+    </div>
+     <div style="width:40%; float:right;">
+      <h5><strong>Not a member?</strong></h5>
+      
+       <p><a href="#" class="asregistra">Register Now</a></p>
+     </div>
+      
+    </div>
+    
+  </div>
+</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+ 
+ <script>
+     function getPaymentDetail(min_charge, total_bill, total_tax, total_tax_Percent, cab_type_id, distance, obj) 
+     {         
+         var point_pickup_area = obj.term;
+         var point_cab_in = obj.pointCabIn;
+         var point_adults = obj.pointAdults;
+         var point_childs = obj.pointChilds;
+         var point_luggages = obj.pointLuggages;
+         var point_cars = obj.pointCars;
+         var point_drop_area = obj.pointDropArea;
+         var point_pickup_address = obj.pointAddress;
+         var point_pickup_time = obj.pickupTime;
+         var point_pickup_date = obj.pickupDate;
+      
+      $.ajax({
+           type: "POST",
+           dataType:'html',
+           url: '<?php echo $this->url('default', array('action'=>'ajaxPayment')); ?>',
+           data:{
+               min_charge:min_charge,total_bill:total_bill,total_tax:total_tax,
+              total_tax_Percent:total_tax_Percent,cab_type_id:cab_type_id,point_cab_in:point_cab_in,
+              distance:distance,point_pickup_area:point_pickup_area,point_adults:point_adults,
+              point_childs:point_childs,point_luggages:point_luggages,point_cars:point_cars,
+              point_drop_area:point_drop_area,point_pickup_address:point_pickup_address,
+              point_pickup_time:point_pickup_time,point_pickup_date:point_pickup_date
+          },
+           success:function(data) {
+               $('#right-sidebar').html(data);
+           }
+
+      });
+ }
+ 
+ function getCouponApply(total_charge)
+ {
+     var coupon_code = $("#coupan_code").val();
+     $.ajax({
+           type: "POST",
+           dataType:'html',
+           url: '<?php echo $this->url('default', array('action'=>'ajaxCoupon')); ?>',
+           data:{coupon_code:coupon_code,total_charge:total_charge},
+           success:function(data) {
+               //alert(data);
+               $('#update_div').html(data); 
+           }
+      });    
+     
+ }
+ 
+ 
+ $(document).ready(function () {
+ $.validator.addMethod("gstRegRegex", function(value, element) {
+        return this.optional(element) || /^[a-z0-9]{15}$/i.test(value);
+    }, "Registration must contain letters, numbers and max 15.");
+ 
+    $("#pointbookform").validate({
+        ignore: ":disabled",
+        rules: {
+            gfName: {
+                required: true
+            },
+            gEmailId:{
+                      required: true,
+                      email: true
+
+            },
+            gMobileNo:{
+                     required:true,
+                     minlength:10,
+                     maxlength:10,
+                     number: true
+            },
+            /*gender:{
+                     required: function() {
+                         return $('[name="gender"]:checked').length === 0;
+                     }
+            },*/
+            gstRegNo:{
+                      required: true,
+                      gstRegRegex:true,
+                      
+
+                      
+            },
+            gstRegCompanyName:{
+                      required: true,
+                      
+            }
+
+        },
+        messages: {
+            gfName: {
+                required: "This field is required."
+            }
+        },
+        submitHandler: function (form) { 
+            form.submit();
+        }
+    });
+    $('input[name="gender"]').rules("add", "required");
+       
+    $("#payLater").click(function() {
+        $("#pointbookform").submit();
+  });
+  
+  $("#pointPickupArea").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: '<?php echo $this->url('default', array('action'=>'location')); ?>',
+                dataType: "json",
+                type: "POST",
+                data: {
+                    term : request.term,
+                    city : $("#pointCabIn").val()
+                },
+                success: function(data) {
+                    response(data);
+                }
+            });
+        },
+        min_length: 3,
+        delay: 300,
+        
+      //source: site_url+'/tunnel/menu/allcities2?key='+API_KEY,minLength:0,delay:0,
+      focus: function( event, ui ) {		 
+        $( "#pointPickupArea" ).val( ui.item.label );
+        return false;
+      },
+      select: function( event, ui ) {
+        $( "#pointPickupArea" ).val( ui.item.label );
+        $( "#pointPickupArea_value" ).val( ui.item.value );
+        
+        return false;
+      }
+    });
+    
+    $("#pointDropArea").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url:'<?php echo $this->url('default', array('action'=>'location')); ?>',
+                dataType: "json",
+                type: "POST",
+                data: {
+                    term: request.term,
+                    city: ''
+                },
+                success: function (data) {
+                    response(data);
+                }
+            });
+        },
+        min_length: 3,
+        delay: 300,
+        focus: function (event, ui) {
+            $("#pointDropArea").val(ui.item.label);
+            return false;
+        },
+        select: function (event, ui) {
+            $("#pointDropArea").val(ui.item.label);
+            $("#pointDropArea_value").val(ui.item.value);
+
+
+            return false;
+        }
+    });
+    
+    $("#pointtopoint").validate({
+        
+        rules: {
+            pointCabIn: {
+                required: true
+            },
+            term:{
+                required:true
+            },
+            pointDropArea:{
+                required:true
+                        
+                    }
+        },
+        messages: {
+            pointCabIn: {
+                required: "Please Select City Name"
+            }
+        },
+        submitHandler: function (form) { 
+            form.submit();
+        }
+    });
+    
+});
+</script>

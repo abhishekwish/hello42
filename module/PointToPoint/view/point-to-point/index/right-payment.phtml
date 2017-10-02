@@ -1,0 +1,230 @@
+<?php
+use Zend\Session\Container;
+$user_session = new Container('User');
+
+$pointPickupDate = $data['point_pickup_date'];
+$pointPickupTime = $data['point_pickup_time'];
+$pointPickupArea = $data['point_pickup_area'];
+$pointAdults = $data['point_adults'];
+$pointChilds = $data['point_childs'];
+$pointLuggages = $data['point_luggages'];
+$pointCars = $data['point_cars'];
+$pointDropArea = $data['point_drop_area'];
+$pointPickupAddress = $data['point_pickup_address'];
+
+$cabTypeId = $data['cab_type_id'];
+$pointCabIn = $data['point_cab_in'];
+$distance = $data['distance'];
+
+$bookingAmt = $data['min_charge'] ? $data['min_charge'] : 0;
+$addonAmt = 0;
+$totalAmt = $addonAmt+$data['total_bill']- $data['total_tax'];
+$discountPercent = 0;
+$discountPercentAmt = ($totalAmt*$discountPercent)/100;
+$netAmt = $totalAmt - $discountPercentAmt;
+$serviceTaxPercent = $data['total_tax_Percent'];
+$serviceTax = ($netAmt * $serviceTaxPercent)/100;
+$paybleAmt = $netAmt + $serviceTax;
+$couponDiscount = 0;
+$totalCharge = $paybleAmt - $couponDiscount;
+
+?>
+
+<input type="hidden" name="cab_type_id" id="cab_type_id" value="<?php echo $cabTypeId; ?>">
+<input type="hidden" name="point_cab_in" id="point_cab_in" value="<?php echo $pointCabIn; ?>">
+<input type="hidden" name="distance" id="distance" value="<?php echo $distance; ?>">
+<input type="hidden" name="point_pickup_area" id="point_pickup_area" value="<?php echo $pointPickupArea; ?>">
+<input type="hidden" name="point_pickup_address" id="point_pickup_address" value="<?php echo $pointPickupAddress; ?>">
+<input type="hidden" name="point_drop_area" id="point_drop_area" value="<?php echo $pointDropArea; ?>">
+<input type="hidden" name="point_adults" id="point_adults" value="<?php echo $pointAdults; ?>">
+<input type="hidden" name="point_childs" id="point_childs" value="<?php echo $pointChilds; ?>">
+<input type="hidden" name="point_luggages" id="point_luggages" value="<?php echo $pointLuggages; ?>">
+<input type="hidden" name="point_cars" id="point_cars" value="<?php echo $pointCars; ?>">
+<input type="hidden" name="point_pickup_time" id="point_pickup_time" value="<?php echo $pointPickupTime; ?>">
+<input type="hidden" name="point_pickup_date" id="point_pickup_date" value="<?php echo $pointPickupDate; ?>">
+
+
+<div class="col-md-3 banner-bottom-grid widthpercent20" style="float:right;">
+                
+                <div class="top-destinations-grids" style="margin-top:0;">
+						
+						<div class="top-destinations-bottom padding_margin0">
+							<div class="td-grids">
+                            
+                            
+                            <div class="left-div-form" style="border-bottom:1px solid #333;">
+							<h4>Payment Detail</h4>
+						</div>
+                        
+                      	  <div class="infopay">
+                          <div class="left-div-form">
+	<div class="title">Booking Amount</div>
+			<div class="price">
+		  		 
+		  <span class=""><span class="WebRupee"> &#x20b9; </span></span><span class="paybooking"><?php echo $bookingAmt;?></span>
+		</div>
+        </div>
+		<div class="left-div-form">
+		<div class="title">Addon Amount</div>
+	<div class="price"><span class="WebRupee"><span class="WebRupee"> &#x20b9; </span></span><span class="payaddon"><?php echo $addonAmt;?></span></div>
+</div>
+<div class="left-div-form">
+	<div class="title">Total Amount</div>
+	<div class="price"><span class="WebRupee"><span class="WebRupee"> &#x20b9; </span></span><span class="payamount"><?php echo $totalAmt ;?></span></div>
+	</div>	
+		<div class="clear"></div>
+<div class="left-div-form">
+		<div class="title" style="color:#C22815; font-weight:bold" title="Only for booking amount">Discount(<?php echo $discountPercent;?>%)</div>
+		<div class="price" style="color:#C22815; font-weight:bold" title="Only for booking amount"><span class="WebRupee"> &#x20b9; </span><span class="discount"><?php echo round($discountPercentAmt);?></span> </div>
+</div>
+<div class="left-div-form">
+		<div class="title">Net Amount</div>
+		<div class="price"><span class="WebRupee"> &#x20b9; </span><span class="netamnt"><?php echo round($netAmt); ?></span> </div>
+</div>
+<div class="left-div-form">
+		<div class="title">Service Tax(<span id="st_text"><?php echo $serviceTaxPercent; ?></span>%)</div>
+		<div class="price"><span class="WebRupee"> &#x20b9; </span><span class="payservice"><?php echo round($serviceTax);?></span> </div>
+		</div>
+		<div class="clear"></div>
+        <div class="left-div-form">
+		<div class="title">Payable Amount</div>
+		<div class="price"><span class="WebRupee"> &#x20b9; </span><span class="paytotal"><?php echo round($paybleAmt);?></span><span id="usdvalue"></span> </div>
+        </div>
+        <div class="left-div-form">
+         <label class="radio-inline specs" style="padding-left:0 !important; width:100%;">
+        <div class="radioWrap">
+         <!--<form action="" onsubmit="return getCouponApply();">-->
+          <input type="text" id="coupan_code" name="coupan_code" placeholder="Coupan Code" style="height:34px;">
+          </div>
+             <div id="coupon-status"></div>
+          <div class="pull-right">
+		  <label id="apply_coupancode" style="float:right; padding-right:0;"><input type="submit" value="Apply" onclick="getCouponApply(<?php echo $totalCharge;?>)"></label>
+          </div>
+		  <div id="coupan_msg"></div>
+		  
+        <small id="booklater_conditions_local"></small>
+        </label>
+        </div>
+         <!--</form>-->
+         <div class="left-div-form" id="update_div">
+           
+        <div class="title"><span class="WebRupee"><b>Total Charge</b></span></div><input type="hidden" name="total_charge" id="total_charge" value="<?php echo round($totalCharge);?>">
+	<div class="price"><span class="WebRupee"><span class="WebRupee"> Rs. </span></span><span class="payaddon"><?php echo round($totalCharge); ?></span></div>
+         </div>
+         
+          <div class="left-div-form">
+          <div class="title">
+        	<input type="checkbox" style="height:auto; margin:0 10px 0 0;"> 
+        </div>
+        <div class="title">
+        Terms & Conditions   
+        </div>
+              
+         </div>
+         
+        <?php
+                                        
+                    if(empty($user_session->username))
+                    {
+                        
+                        ?> 
+        <div class="left-div-form">
+        <div class="title" style="width:100%;">
+        <div class="overviueimg31"><a href="#accordion_travler" class="guestlogin" id="asguest" onClick="javascript:togglemodify1('1','btnBack');">As a Guest</a>
+        </div>
+        <div class="overviueimg32">or</div>
+        <div class="overviueimg31">
+        <a data-toggle="modal" data-target="#myModallsogin" href="#" class="aslogin">As login</a>
+        </div>
+        </div>
+            
+            <div class="title" style="width:100%; margin-top:5px;" align="center">
+                <a href="#" data-toggle="modal" data-target="#myModal" style="cursor:pointer;">View benefits of login</a>
+            </div>
+        </div>
+                    <?php } ?>
+         
+
+</div> 
+                                                            
+<script>
+    function PointBookCab()
+    {
+        var point_coupon_id = $('#point_coupon_id').val();
+        var success_coupon = $('#success_coupon').val();
+        var total_charge = $('#total_charge').val();
+        var cab_type_id = $('#cab_type_id').val();
+        var point_cab_in = $('#point_cab_in').val();
+        var distance = $('#distance').val();
+        
+        var point_pickup_area = $('#point_pickup_area').val();
+        var point_pickup_address = $('#point_pickup_address').val();
+        var point_drop_area = $('#point_drop_area').val();
+        var point_adults = $('#point_adults').val();
+        var point_childs = $('#point_childs').val();
+        var point_luggages = $('#point_luggages').val();
+        var point_cars = $('#point_cars').val();
+        var point_pickup_time = $('#point_pickup_time').val();
+        var point_pickup_date = $('#point_pickup_date').val();
+        
+        var point_fname = $('#gfName').val();
+        var point_lname = $('#glName').val();
+        var point_email_id = $('#gEmailId').val();
+        var point_mobile_no = $('#gMobileNo').val();
+        var point_alt_mobile_no = $('#gAltMobileNo').val();
+        
+        var point_guest = $('#guest').val();
+        
+        var point_gender = $('input[name=gender]:checked', '#pointbookform').val();
+        
+        var point_gst = $('input[name=gst]:checked', '#pointbookform').val();
+        
+        var point_gst_reg_no = $('#gstRegNo').val();
+        var point_gst_reg_company_name = $('#gstRegCompanyName').val();
+        var point_nationality = $('#gNationality').val();
+                              
+        
+        
+        $.ajax({
+           type: "POST",           
+           url: '<?php echo $this->url('default', array('action'=>'ajaxPointBookCab')); ?>',
+           data:{
+               total_charge:total_charge,cab_type_id:cab_type_id,
+              point_cab_in:point_cab_in,distance:distance,point_pickup_area:point_pickup_area,
+              point_pickup_address:point_pickup_address,point_drop_area:point_drop_area,
+              point_adults:point_adults,point_childs:point_childs,point_luggages:point_luggages,
+              point_cars:point_cars,point_pickup_time:point_pickup_time,point_pickup_date:point_pickup_date,
+              point_fname:point_fname,point_lname:point_lname,point_email_id:point_email_id,
+              point_mobile_no:point_mobile_no,point_alt_mobile_no:point_alt_mobile_no,point_gender:point_gender,
+              point_guest:point_guest,point_gst:point_gst,point_gst_reg_no:point_gst_reg_no,
+              point_gst_reg_company_name:point_gst_reg_company_name,
+              point_nationality:point_nationality,success_coupon:success_coupon,
+              point_coupon_id:point_coupon_id
+          },
+           success:function(data) {
+               window.location.replace("/index/point");
+               //alert(data);
+           }
+
+      });
+    }
+    
+    $(document).ready(function (){
+    $("#asguest").click(function(){
+        $("#accordion_travler").show(500);
+    });
+    
+    var ckbox = $('#gst');
+
+    $('input').on('click',function () {
+        if (ckbox.is(':checked')) {
+            $("#gst_no").show();
+        } else {
+            $("#gst_no").hide();
+        }
+    });
+    
+});
+</script>                                                            
+
+       

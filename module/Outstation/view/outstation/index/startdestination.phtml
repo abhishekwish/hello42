@@ -1,0 +1,9 @@
+<ul id="suggestboxUl">
+<?php $cityname = $this->cityname;
+if(count($cityname)>0){
+foreach($cityname as $city){ ?>
+  <li onClick="selectCountry('<?php echo $city['id']; ?>','<?php echo $city['city_name']; ?>',this.parentNode.parentNode.id);"><?php echo $city["city_name"];?></li>
+<?php }}else{ ?>           
+  <li>No Service</li>
+<?php } ?>
+</ul>

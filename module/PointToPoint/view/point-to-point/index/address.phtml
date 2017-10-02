@@ -1,0 +1,19 @@
+<?php
+
+$data = explode(',',$fullAddress);
+$j = 0;
+
+for($i = count($data)-1; $i>0; $i--)
+{
+    $j+=1;
+    if($j===4)
+    {
+        $area = $data[$i];
+        break;        
+    }    
+}
+?>
+<script>
+    $("#pointAddress").val("<?php echo $fullAddress; ?>");
+    $("#pointPickupArea").val("<?php echo $area; ?>");
+</script>
